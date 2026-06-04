@@ -12,7 +12,7 @@ import { USE_MOCK_LOGIN, MOCK_AUTH } from '@/lib/auth.config';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from '@/components/ui/glass-card';
 import { Activity, Eye, EyeOff, Loader2 } from 'lucide-react';
 
 const loginSchema = z.object({
@@ -77,79 +77,75 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 p-4 relative overflow-hidden">
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-3xl" />
-      </div>
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Gradient Overlay for readability */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--galactic-obsidian)]/50 via-[var(--galactic-deep)]/30 to-[var(--galactic-obsidian)]/50" />
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo & Title */}
-        <div className="flex flex-col items-center mb-8">
-          <div className="relative mb-4">
-            <div className="absolute inset-0 bg-blue-500 rounded-2xl blur-lg opacity-50 animate-pulse" />
-            <div className="relative bg-gradient-to-br from-blue-500 to-indigo-600 p-4 rounded-2xl shadow-xl">
-              <Activity className="h-8 w-8 text-white" />
+        <div className="flex flex-col items-center mb-10 animate-slide-up">
+          <div className="relative mb-6 group">
+            <div className="absolute inset-0 bg-[var(--galactic-aurora)] rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
+            <div className="relative bg-gradient-to-br from-[var(--galactic-aurora)] to-[var(--galactic-aurora)]/70 p-5 rounded-2xl shadow-[0_0_30px_var(--glass-shadow)] ring-1 ring-white/20 ring-offset-4 ring-offset-[var(--galactic-deep)] transition-all duration-500 group-hover:-translate-y-1">
+              <Activity className="h-10 w-10 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-white">HALO REKAN REKANITA !!</h1>
-          <p className="text-blue-200/70 mt-2 text-sm">Web Report Kinerja Tim Media</p>
+          <h1 className="text-3xl font-heading font-bold tracking-tight text-[var(--galactic-diamond)]">HALO REKAN REKANITA !!</h1>
+          <p className="text-[var(--galactic-diamond)]/80 mt-3 text-sm font-medium tracking-wide uppercase">Web Report Kinerja Tim Media</p>
         </div>
 
         {/* Login Card */}
-        <Card className="shadow-2xl border-0 bg-white/[0.03] backdrop-blur-xl ring-1 ring-white/10">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-white text-xl">Masuk ke Akun</CardTitle>
-            <CardDescription className="text-blue-200/50">
+        <GlassCard className="shadow-[0_20px_50px_var(--glass-shadow)] border border-white/10 animate-fade-in transition-shadow duration-500">
+          <GlassCardHeader className="pb-4 border-b border-white/5">
+            <GlassCardTitle className="text-[var(--galactic-diamond)] text-xl font-heading">Masuk ke Akun</GlassCardTitle>
+            <p className="text-[var(--galactic-diamond)]/70 text-sm mt-1">
               Gunakan kredensial yang diberikan oleh administrator.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+            </p>
+          </GlassCardHeader>
+          <GlassCardContent className="pt-6">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               {/* Email Field */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium text-blue-100/80">Email</Label>
+                <Label htmlFor="email" className="text-sm font-medium text-[var(--galactic-diamond)]/80">Email</Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="masukan email anda"
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-blue-500/50 focus-visible:border-blue-500/50 h-11"
+                  className="glass-input h-12 w-full text-[var(--galactic-diamond)] placeholder:text-[var(--galactic-diamond)]/50 px-4"
                   {...register('email')}
                 />
                 {errors.email && (
-                  <p className="text-xs text-red-400">{errors.email.message}</p>
+                  <p className="text-xs text-[var(--galactic-rose)]">{errors.email.message}</p>
                 )}
               </div>
 
               {/* Password Field */}
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium text-blue-100/80">Password</Label>
+                <Label htmlFor="password" className="text-sm font-medium text-[var(--galactic-diamond)]/80">Password</Label>
                 <div className="relative">
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
                     placeholder="masukan password anda"
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus-visible:ring-blue-500/50 focus-visible:border-blue-500/50 h-11 pr-10"
+                    className="glass-input h-12 w-full text-[var(--galactic-diamond)] placeholder:text-[var(--galactic-diamond)]/50 pl-4 pr-10"
                     {...register('password')}
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--galactic-diamond)]/60 hover:text-[var(--galactic-diamond)]/80 transition-colors p-2"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-xs text-red-400">{errors.password.message}</p>
+                  <p className="text-xs text-[var(--galactic-rose)]">{errors.password.message}</p>
                 )}
               </div>
 
               {/* Error Message */}
               {errorMsg && (
-                <div className="p-3 text-sm text-red-300 bg-red-500/10 rounded-lg ring-1 ring-red-500/20">
+                <div className="p-3 text-sm text-[var(--galactic-rose)] bg-[var(--galactic-rose)]/10 rounded-xl ring-1 ring-[var(--galactic-rose)]/20 backdrop-blur-md">
                   {errorMsg}
                 </div>
               )}
@@ -157,7 +153,7 @@ export default function LoginPage() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                className="w-full h-11 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-medium shadow-lg shadow-blue-500/25 transition-all duration-200"
+                className="w-full h-12 rounded-xl bg-gradient-to-r from-[var(--galactic-aurora)] to-[var(--galactic-aurora)]/80 text-white font-medium shadow-[0_4px_15px_var(--glass-shadow)] transition-all duration-300 hover:brightness-110 border border-white/10"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -170,10 +166,10 @@ export default function LoginPage() {
                 )}
               </Button>
             </form>
-          </CardContent>
-        </Card>
+          </GlassCardContent>
+        </GlassCard>
 
-        <p className="text-center text-xs text-blue-200/30 mt-6">
+        <p className="text-center text-xs text-[var(--galactic-diamond)]/50 mt-8 tracking-wider">
           © 2026 Media PC IPNU IPPNU KABUPATEN MALANG
         </p>
       </div>

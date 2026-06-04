@@ -24,24 +24,44 @@ export function StatCardsGrid({
   femaleCount,
   isLoading,
 }: StatCardsGridProps) {
+  
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex justify-between items-center mb-6">
+          <div className="space-y-2">
+            <div className="h-8 w-48 bg-white/10 rounded-lg animate-pulse" />
+            <div className="h-4 w-64 bg-white/5 rounded-md animate-pulse" />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StatCard isLoading={true} title="" value="" icon={Users} />
+          <StatCard isLoading={true} title="" value="" icon={Users} />
+          <StatCard isLoading={true} title="" value="" icon={Users} />
+          <StatCard isLoading={true} title="" value="" icon={Users} />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 z-10 relative">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800">Ringkasan Kinerja</h2>
-          <p className="text-slate-500 text-sm mt-1">
-            Tahun {new Date().getFullYear()} &middot;{' '}
-            <span className="text-blue-600">{maleCount}👨</span>{' '}
-            <span className="text-pink-600">{femaleCount}👩</span>
+          <h2 className="text-2xl font-heading font-bold text-[var(--galactic-diamond)] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">Ringkasan Kinerja</h2>
+          <p className="text-[var(--galactic-diamond)]/60 text-sm mt-2 flex items-center gap-2">
+            Tahun {new Date().getFullYear()} &middot;
+            <span className="glass px-2 py-0.5 rounded-md ring-1 ring-[var(--galactic-aurora)]/30 text-[var(--galactic-aurora-soft)]/80 drop-shadow-[0_0_5px_rgba(59,130,246,0.5)] shadow-[inset_0_0_10px_rgba(59,130,246,0.1)]">
+              {maleCount} 👨
+            </span>
+            <span className="glass px-2 py-0.5 rounded-md ring-1 ring-[var(--galactic-rose)]/30 text-[var(--galactic-rose)]">
+              {femaleCount} 👩
+            </span>
           </p>
         </div>
       </div>
 
-      {isLoading && (
-        <div className="text-center py-4 text-slate-400 text-sm">Memuat data dari server...</div>
-      )}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           title="Total Anggota"
           value={totalMembers}

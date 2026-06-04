@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useAuthStore } from '@/store/authStore';
+import { toast } from 'sonner';
 
 // We'll create the authStore soon. It will contain the token.
 
@@ -73,6 +74,11 @@ api.interceptors.response.use(
       }
     }
     
+    if (error.response?.status === 403) {
+      const msg = error.response?.data?.message || 'Akses ditolak. Anda tidak memiliki izin.';
+      toast.error(msg);
+    }
+
     return Promise.reject(error);
   }
 );

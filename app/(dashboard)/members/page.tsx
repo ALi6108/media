@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useMemo } from 'react';
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
+import { GlassCard, GlassCardContent } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -29,11 +29,11 @@ type SortOrder = 'none' | 'asc' | 'desc';
 type KinerjaFilter = 'all' | 'sangat-baik' | 'baik' | 'cukup' | 'kurang';
 
 const kinerjaOptions: { value: KinerjaFilter; label: string; emoji: string; color: string; activeColor: string }[] = [
-  { value: 'all', label: 'Semua', emoji: '📊', color: 'text-slate-600 border-slate-200 bg-white hover:border-slate-300', activeColor: 'bg-slate-800 text-white border-slate-800 shadow-md' },
-  { value: 'sangat-baik', label: 'Sangat Baik', emoji: '🌟', color: 'text-emerald-600 border-emerald-200 bg-emerald-50/50 hover:border-emerald-300', activeColor: 'bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-500/25' },
-  { value: 'baik', label: 'Baik', emoji: '✅', color: 'text-blue-600 border-blue-200 bg-blue-50/50 hover:border-blue-300', activeColor: 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25' },
-  { value: 'cukup', label: 'Cukup', emoji: '⚡', color: 'text-amber-600 border-amber-200 bg-amber-50/50 hover:border-amber-300', activeColor: 'bg-amber-500 text-white border-amber-500 shadow-md shadow-amber-500/25' },
-  { value: 'kurang', label: 'Kurang', emoji: '📉', color: 'text-red-600 border-red-200 bg-red-50/50 hover:border-red-300', activeColor: 'bg-red-500 text-white border-red-500 shadow-md shadow-red-500/25' },
+  { value: 'all', label: 'Semua', emoji: '📊', color: 'text-[var(--galactic-diamond)]/60 border-white/10 bg-white/5 hover:border-white/10', activeColor: 'bg-[var(--galactic-obsidian)] text-[var(--galactic-platinum)] border-[var(--galactic-obsidian)] shadow-lg shadow-black/40' },
+  { value: 'sangat-baik', label: 'Sangat Baik', emoji: '🌟', color: 'text-[var(--galactic-emerald)] border-[var(--galactic-emerald)]/20 bg-[var(--galactic-emerald)]/10 hover:border-[var(--galactic-emerald)]/30', activeColor: 'bg-[var(--galactic-emerald)] text-white border-emerald-600 shadow-md shadow-emerald-500/25' },
+  { value: 'baik', label: 'Baik', emoji: '✅', color: 'text-[var(--galactic-aurora)] border-[var(--galactic-aurora)]/20 bg-[var(--galactic-aurora)]/10 hover:border-[var(--galactic-aurora)]/30', activeColor: 'bg-[var(--galactic-aurora)] text-white border-[var(--galactic-aurora)] shadow-md shadow-[var(--galactic-aurora)]/25' },
+  { value: 'cukup', label: 'Cukup', emoji: '⚡', color: 'text-[var(--galactic-amber)] border-[var(--galactic-amber)]/20 bg-[var(--galactic-amber)]/10 hover:border-[var(--galactic-amber)]/30', activeColor: 'bg-[var(--galactic-amber)]/100 text-white border-amber-500 shadow-md shadow-amber-500/25' },
+  { value: 'kurang', label: 'Kurang', emoji: '📉', color: 'text-[var(--galactic-rose)] border-[var(--galactic-rose)]/20 bg-[var(--galactic-rose)]/10 hover:border-[var(--galactic-rose)]/30', activeColor: 'bg-[var(--galactic-rose)]/100 text-white border-red-500 shadow-md shadow-red-500/25' },
 ];
 
 function matchKinerja(score: number): KinerjaFilter {
@@ -44,9 +44,9 @@ function matchKinerja(score: number): KinerjaFilter {
 }
 
 const avatarColors = [
-  'bg-blue-500', 'bg-indigo-500', 'bg-violet-500',
-  'bg-pink-500', 'bg-teal-500', 'bg-emerald-500',
-  'bg-rose-500', 'bg-cyan-500',
+  'bg-[var(--galactic-aurora)]/100', 'bg-[var(--galactic-cosmic)]', 'bg-[var(--galactic-aurora-soft)]',
+  'bg-[var(--galactic-rose)]/100', 'bg-teal-500', 'bg-[var(--galactic-emerald)]/100',
+  'bg-[var(--galactic-rose)]/70', 'bg-cyan-500',
 ];
 
 const genderTabs: { label: string; value: Gender | 'all'; icon: string }[] = [
@@ -189,11 +189,11 @@ export default function MembersPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800">Anggota Tim</h2>
-          <p className="text-slate-500 text-sm mt-1">
+          <h2 className="text-2xl font-heading font-bold text-[var(--galactic-diamond)]">Anggota Tim</h2>
+          <p className="text-[var(--galactic-diamond)]/80 text-sm mt-1">
             {members.length} anggota terdaftar &middot;{' '}
-            <span className="text-blue-600">{maleCount} Laki-laki</span> &middot;{' '}
-            <span className="text-pink-600">{femaleCount} Perempuan</span>
+            <span className="text-[var(--galactic-aurora)]">{maleCount} Laki-laki</span> &middot;{' '}
+            <span className="text-[var(--galactic-rose)]">{femaleCount} Perempuan</span>
           </p>
         </div>
         <div className="flex gap-2">
@@ -201,13 +201,13 @@ export default function MembersPage() {
             variant="outline"
             onClick={() => fetchMembers()}
             disabled={isLoading}
-            className="border-slate-200"
+            className="border-white/10"
           >
             <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} /> Refresh
           </Button>
           {isAdmin && (
             <Button
-              className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/25 transition-all duration-200"
+              className="bg-[var(--galactic-aurora)] hover:bg-[var(--galactic-cosmic)] shadow-lg shadow-[var(--galactic-aurora)]/25 transition-all duration-200"
               onClick={() => setShowAddForm(!showAddForm)}
             >
               {showAddForm ? (
@@ -222,9 +222,9 @@ export default function MembersPage() {
 
       {/* Error */}
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+        <div className="p-4 bg-[var(--galactic-rose)]/10 border border-[var(--galactic-rose)]/20 rounded-xl text-[var(--galactic-rose)] text-sm">
           {error}
-          <Button size="sm" variant="ghost" className="ml-2 text-red-600" onClick={() => fetchMembers()}>
+          <Button size="sm" variant="ghost" className="ml-2 text-[var(--galactic-rose)]" onClick={() => fetchMembers()}>
             Coba Lagi
           </Button>
         </div>
@@ -232,17 +232,17 @@ export default function MembersPage() {
 
       {/* Quick Add Form - Inline */}
       {showAddForm && (
-        <Card className="shadow-lg border-2 border-blue-200 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 animate-in slide-in-from-top-2 duration-300">
-          <CardContent className="p-6">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+        <GlassCard className="shadow-lg border-2 border-[var(--galactic-aurora)]/20 animate-in slide-in-from-top-2 duration-300">
+          <GlassCardContent className="p-6">
+            <h3 className="text-lg font-semibold text-[var(--galactic-diamond)] mb-4 flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-[var(--galactic-aurora)] flex items-center justify-center">
                 <UserPlus className="h-4 w-4 text-white" />
               </div>
               Tambah Anggota Baru
             </h3>
 
             {addError && (
-              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+              <div className="mb-4 p-3 bg-[var(--galactic-rose)]/10 border border-[var(--galactic-rose)]/20 rounded-lg text-[var(--galactic-rose)] text-sm">
                 {addError}
               </div>
             )}
@@ -251,15 +251,15 @@ export default function MembersPage() {
               {/* Photo Upload */}
               <div className="flex flex-col items-center gap-3 md:row-span-2">
                 <div
-                  className="w-28 h-28 rounded-2xl border-2 border-dashed border-slate-300 hover:border-blue-400 flex items-center justify-center cursor-pointer transition-colors overflow-hidden bg-white"
+                  className="w-28 h-28 rounded-2xl border-2 border-dashed border-white/10 hover:border-[var(--galactic-aurora-soft)] flex items-center justify-center cursor-pointer transition-colors overflow-hidden bg-white/5"
                   onClick={() => fileInputRef.current?.click()}
                 >
                   {photoPreview ? (
                     <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
                   ) : (
                     <div className="text-center">
-                      <Camera className="h-8 w-8 text-slate-300 mx-auto" />
-                      <span className="text-xs text-slate-400 mt-1 block">Upload Foto</span>
+                      <Camera className="h-8 w-8 text-[var(--galactic-diamond)]/60 mx-auto" />
+                      <span className="text-xs text-[var(--galactic-diamond)]/60 mt-1 block">Upload Foto</span>
                     </div>
                   )}
                 </div>
@@ -273,7 +273,7 @@ export default function MembersPage() {
                 {photoPreview && (
                   <button
                     onClick={() => setPhotoPreview(null)}
-                    className="text-xs text-red-500 hover:text-red-700"
+                    className="text-xs text-[var(--galactic-rose)] hover:text-[var(--galactic-rose)]"
                   >
                     Hapus Foto
                   </button>
@@ -282,19 +282,19 @@ export default function MembersPage() {
 
               {/* Name */}
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-slate-700">Nama Lengkap *</label>
+                <label className="text-sm font-medium text-[var(--galactic-diamond)]">Nama Lengkap *</label>
                 <Input
                   placeholder="Masukkan nama lengkap"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className={formErrors.name ? 'border-red-400' : ''}
                 />
-                {formErrors.name && <p className="text-xs text-red-500">{formErrors.name}</p>}
+                {formErrors.name && <p className="text-xs text-[var(--galactic-rose)]">{formErrors.name}</p>}
               </div>
 
               {/* Email */}
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-slate-700">Email</label>
+                <label className="text-sm font-medium text-[var(--galactic-diamond)]">Email</label>
                 <Input
                   type="email"
                   placeholder="email@media.com"
@@ -302,44 +302,44 @@ export default function MembersPage() {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className={formErrors.email ? 'border-red-400' : ''}
                 />
-                {formErrors.email && <p className="text-xs text-red-500">{formErrors.email}</p>}
+                {formErrors.email && <p className="text-xs text-[var(--galactic-rose)]">{formErrors.email}</p>}
               </div>
 
               {/* Position */}
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-slate-700">Posisi / Jabatan *</label>
+                <label className="text-sm font-medium text-[var(--galactic-diamond)]">Posisi / Jabatan *</label>
                 <Input
                   placeholder="Contoh: Content Creator"
                   value={formData.position}
                   onChange={(e) => setFormData({ ...formData, position: e.target.value })}
                   className={formErrors.position ? 'border-red-400' : ''}
                 />
-                {formErrors.position && <p className="text-xs text-red-500">{formErrors.position}</p>}
+                {formErrors.position && <p className="text-xs text-[var(--galactic-rose)]">{formErrors.position}</p>}
               </div>
 
               {/* Department */}
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-slate-700">Divisi *</label>
+                <label className="text-sm font-medium text-[var(--galactic-diamond)]">Divisi *</label>
                 <Input
                   placeholder="Contoh: Media Sosial"
                   value={formData.department}
                   onChange={(e) => setFormData({ ...formData, department: e.target.value })}
                   className={formErrors.department ? 'border-red-400' : ''}
                 />
-                {formErrors.department && <p className="text-xs text-red-500">{formErrors.department}</p>}
+                {formErrors.department && <p className="text-xs text-[var(--galactic-rose)]">{formErrors.department}</p>}
               </div>
 
               {/* Gender */}
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-slate-700">Jenis Kelamin</label>
+                <label className="text-sm font-medium text-[var(--galactic-diamond)]">Jenis Kelamin</label>
                 <div className="flex gap-2">
                   <button
                     type="button"
                     onClick={() => setFormData({ ...formData, gender: 'Laki-laki' })}
                     className={`flex-1 px-4 py-2 rounded-lg border text-sm font-medium transition-all duration-200 ${
                       formData.gender === 'Laki-laki'
-                        ? 'bg-blue-600 text-white border-blue-600 shadow-md'
-                        : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300'
+                        ? 'bg-[var(--galactic-aurora)] text-white border-[var(--galactic-aurora)] shadow-md'
+                        : 'bg-white/5 text-[var(--galactic-diamond)]/60 border-white/10 hover:border-[var(--galactic-aurora)]/30'
                     }`}
                   >
                     👨 Laki-laki
@@ -349,8 +349,8 @@ export default function MembersPage() {
                     onClick={() => setFormData({ ...formData, gender: 'Perempuan' })}
                     className={`flex-1 px-4 py-2 rounded-lg border text-sm font-medium transition-all duration-200 ${
                       formData.gender === 'Perempuan'
-                        ? 'bg-pink-600 text-white border-pink-600 shadow-md'
-                        : 'bg-white text-slate-600 border-slate-200 hover:border-pink-300'
+                        ? 'bg-[var(--galactic-rose)] text-white border-pink-600 shadow-md'
+                        : 'bg-white/5 text-[var(--galactic-diamond)]/60 border-white/10 hover:border-[var(--galactic-rose)]/30'
                     }`}
                   >
                     👩 Perempuan
@@ -360,7 +360,7 @@ export default function MembersPage() {
 
               {/* Phone */}
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-slate-700">No. Telepon</label>
+                <label className="text-sm font-medium text-[var(--galactic-diamond)]">No. Telepon</label>
                 <Input
                   placeholder="08xxxxxxxxxx"
                   value={formData.phone}
@@ -369,14 +369,14 @@ export default function MembersPage() {
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-200">
+            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/10">
               <Button variant="outline" onClick={() => setShowAddForm(false)}>
                 Batal
               </Button>
               <Button
                 onClick={handleAddMember}
                 disabled={isAdding}
-                className="bg-blue-600 hover:bg-blue-700 shadow-md"
+                className="bg-[var(--galactic-aurora)] hover:bg-[var(--galactic-cosmic)] shadow-md"
               >
                 {isAdding ? (
                   <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Menyimpan...</>
@@ -385,15 +385,15 @@ export default function MembersPage() {
                 )}
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </GlassCardContent>
+        </GlassCard>
       )}
 
       {/* Search + Filter + Gender Tabs */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
         {/* Search */}
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--galactic-diamond)]/60" />
           <Input
             placeholder="Cari nama atau divisi..."
             className="pl-10"
@@ -410,8 +410,8 @@ export default function MembersPage() {
                 id="filter-toggle-btn"
                 className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-all duration-300 ${
                   activeFilterCount > 0
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-blue-600 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40'
-                    : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300 hover:text-blue-600 hover:shadow-md'
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-[var(--galactic-aurora)] shadow-lg shadow-[var(--galactic-aurora)]/25 hover:shadow-blue-500/40'
+                    : 'bg-white/5 text-[var(--galactic-diamond)]/60 border-white/10 hover:border-[var(--galactic-aurora)]/30 hover:text-[var(--galactic-aurora)] hover:shadow-md'
                 }`}
               />
             }
@@ -419,7 +419,7 @@ export default function MembersPage() {
             <SlidersHorizontal className="h-4 w-4" />
             Filter
             {activeFilterCount > 0 && (
-              <span className="flex items-center justify-center w-5 h-5 text-[10px] font-bold rounded-full bg-white text-blue-600 shadow-sm">
+              <span className="flex items-center justify-center w-5 h-5 text-xs font-bold rounded-full bg-white/5 text-[var(--galactic-aurora)] shadow-[0_0_15px_rgba(255,255,255,0.05)]">
                 {activeFilterCount}
               </span>
             )}
@@ -439,8 +439,8 @@ export default function MembersPage() {
               {/* === Abjad (Sort) === */}
               <div className="space-y-2.5">
                 <div className="flex items-center gap-2">
-                  <ArrowDownAZ className="h-4 w-4 text-violet-500" />
-                  <h4 className="text-sm font-semibold text-slate-700">Abjad</h4>
+                  <ArrowDownAZ className="h-4 w-4 text-[var(--galactic-aurora-soft)]" />
+                  <h4 className="text-sm font-semibold text-[var(--galactic-diamond)]">Abjad</h4>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   {[
@@ -453,8 +453,8 @@ export default function MembersPage() {
                       onClick={() => setSortOrder(opt.value)}
                       className={`flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-medium transition-all duration-200 ${
                         sortOrder === opt.value
-                          ? 'bg-violet-600 text-white border-violet-600 shadow-md shadow-violet-500/25'
-                          : 'bg-white text-slate-600 border-slate-200 hover:border-violet-300 hover:text-violet-600'
+                          ? 'bg-[var(--galactic-aurora)] text-white border-violet-600 shadow-md shadow-violet-500/25'
+                          : 'bg-white/5 text-[var(--galactic-diamond)]/60 border-white/10 hover:border-[var(--galactic-aurora)]/20 hover:text-[var(--galactic-aurora)]'
                       }`}
                     >
                       {opt.icon}
@@ -464,21 +464,21 @@ export default function MembersPage() {
                 </div>
               </div>
 
-              <div className="border-t border-slate-100" />
+              <div className="border-t border-white/5" />
 
               {/* === Jabatan (Position) === */}
               <div className="space-y-2.5">
                 <div className="flex items-center gap-2">
-                  <Briefcase className="h-4 w-4 text-blue-500" />
-                  <h4 className="text-sm font-semibold text-slate-700">Jabatan</h4>
+                  <Briefcase className="h-4 w-4 text-[var(--galactic-aurora-soft)]" />
+                  <h4 className="text-sm font-semibold text-[var(--galactic-diamond)]">Jabatan</h4>
                 </div>
                 <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto pr-1">
                   <button
                     onClick={() => setJabatanFilter('all')}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all duration-200 ${
                       jabatanFilter === 'all'
-                        ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25'
-                        : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300 hover:text-blue-600'
+                        ? 'bg-[var(--galactic-aurora)] text-white border-[var(--galactic-aurora)] shadow-md shadow-[var(--galactic-aurora)]/25'
+                        : 'bg-white/5 text-[var(--galactic-diamond)]/60 border-white/10 hover:border-[var(--galactic-aurora)]/30 hover:text-[var(--galactic-aurora)]'
                     }`}
                   >
                     {jabatanFilter === 'all' && <Check className="h-3 w-3" />}
@@ -490,8 +490,8 @@ export default function MembersPage() {
                       onClick={() => setJabatanFilter(jabatanFilter === pos ? 'all' : pos)}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all duration-200 ${
                         jabatanFilter === pos
-                          ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25'
-                          : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300 hover:text-blue-600'
+                          ? 'bg-[var(--galactic-aurora)] text-white border-[var(--galactic-aurora)] shadow-md shadow-[var(--galactic-aurora)]/25'
+                          : 'bg-white/5 text-[var(--galactic-diamond)]/60 border-white/10 hover:border-[var(--galactic-aurora)]/30 hover:text-[var(--galactic-aurora)]'
                       }`}
                     >
                       {jabatanFilter === pos && <Check className="h-3 w-3" />}
@@ -499,18 +499,18 @@ export default function MembersPage() {
                     </button>
                   ))}
                   {uniquePositions.length === 0 && (
-                    <p className="text-xs text-slate-400 italic">Belum ada data jabatan</p>
+                    <p className="text-xs text-[var(--galactic-diamond)]/60 italic">Belum ada data jabatan</p>
                   )}
                 </div>
               </div>
 
-              <div className="border-t border-slate-100" />
+              <div className="border-t border-white/5" />
 
               {/* === Kinerja (Performance) === */}
               <div className="space-y-2.5">
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-emerald-500" />
-                  <h4 className="text-sm font-semibold text-slate-700">Kinerja</h4>
+                  <TrendingUp className="h-4 w-4 text-[var(--galactic-emerald)]" />
+                  <h4 className="text-sm font-semibold text-[var(--galactic-diamond)]">Kinerja</h4>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   {kinerjaOptions.map(opt => (
@@ -524,7 +524,7 @@ export default function MembersPage() {
                       <span>{opt.emoji}</span>
                       {opt.label}
                       {opt.value !== 'all' && (
-                        <span className={`ml-auto text-[10px] font-normal ${
+                        <span className={`ml-auto text-xs font-normal ${
                           kinerjaFilter === opt.value ? 'opacity-80' : 'opacity-50'
                         }`}>
                           ({members.filter(m => matchKinerja(m.avgScore) === opt.value).length})
@@ -549,7 +549,7 @@ export default function MembersPage() {
               </Button>
               <Button
                 size="sm"
-                className="bg-blue-600 hover:bg-blue-700 gap-1.5"
+                className="bg-[var(--galactic-aurora)] hover:bg-[var(--galactic-cosmic)] gap-1.5"
                 onClick={() => setFilterOpen(false)}
               >
                 <Check className="h-3.5 w-3.5" />
@@ -560,15 +560,15 @@ export default function MembersPage() {
         </Dialog>
 
         {/* Gender Filter Tabs */}
-        <div className="flex gap-1 bg-slate-100 p-1 rounded-xl">
+        <div className="flex gap-1 bg-white/[0.03] p-1 rounded-xl">
           {genderTabs.map((tab) => (
             <button
               key={tab.value}
               onClick={() => setActiveTab(tab.value)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                 activeTab === tab.value
-                  ? 'bg-white text-slate-800 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700'
+                  ? 'bg-white/5 text-[var(--galactic-diamond)] shadow-[0_0_15px_rgba(255,255,255,0.05)]'
+                  : 'text-[var(--galactic-diamond)]/60 hover:text-[var(--galactic-diamond)]'
               }`}
             >
               <span className="mr-1.5">{tab.icon}</span>
@@ -588,31 +588,31 @@ export default function MembersPage() {
       {/* Active Filter Tags */}
       {activeFilterCount > 0 && (
         <div className="flex flex-wrap items-center gap-2 animate-in slide-in-from-top-1 duration-200">
-          <span className="text-xs text-slate-400 font-medium">Filter aktif:</span>
+          <span className="text-xs text-[var(--galactic-diamond)]/60 font-medium">Filter aktif:</span>
           {sortOrder !== 'none' && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-violet-100 text-violet-700 text-xs font-medium ring-1 ring-violet-200">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--galactic-aurora)]/10 text-[var(--galactic-aurora)] text-xs font-medium ring-1 ring-[var(--galactic-aurora)]/20">
               {sortOrder === 'asc' ? <ArrowDownAZ className="h-3 w-3" /> : <ArrowUpZA className="h-3 w-3" />}
               {sortOrder === 'asc' ? 'A → Z' : 'Z → A'}
-              <button onClick={() => setSortOrder('none')} className="ml-0.5 hover:text-violet-900 transition-colors">
+              <button onClick={() => setSortOrder('none')} className="ml-0.5 hover:text-[var(--galactic-aurora-soft)] transition-colors">
                 <X className="h-3 w-3" />
               </button>
             </span>
           )}
           {jabatanFilter !== 'all' && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-medium ring-1 ring-blue-200">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--galactic-aurora)]/10 text-[var(--galactic-aurora)] text-xs font-medium ring-1 ring-[var(--galactic-aurora)]/20">
               <Briefcase className="h-3 w-3" />
               {jabatanFilter}
-              <button onClick={() => setJabatanFilter('all')} className="ml-0.5 hover:text-blue-900 transition-colors">
+              <button onClick={() => setJabatanFilter('all')} className="ml-0.5 hover:text-[var(--galactic-aurora)] transition-colors">
                 <X className="h-3 w-3" />
               </button>
             </span>
           )}
           {kinerjaFilter !== 'all' && (
             <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ring-1 ${
-              kinerjaFilter === 'sangat-baik' ? 'bg-emerald-100 text-emerald-700 ring-emerald-200' :
-              kinerjaFilter === 'baik' ? 'bg-blue-100 text-blue-700 ring-blue-200' :
-              kinerjaFilter === 'cukup' ? 'bg-amber-100 text-amber-700 ring-amber-200' :
-              'bg-red-100 text-red-700 ring-red-200'
+              kinerjaFilter === 'sangat-baik' ? 'bg-[var(--galactic-emerald)]/10 text-[var(--galactic-emerald)] ring-[var(--galactic-emerald)]/20' :
+              kinerjaFilter === 'baik' ? 'bg-[var(--galactic-aurora)]/10 text-[var(--galactic-aurora)] ring-[var(--galactic-aurora)]/20' :
+              kinerjaFilter === 'cukup' ? 'bg-[var(--galactic-amber)]/10 text-[var(--galactic-amber)] ring-[var(--galactic-amber)]/20' :
+              'bg-[var(--galactic-rose)]/10 text-[var(--galactic-rose)] ring-[var(--galactic-rose)]/20'
             }`}>
               <TrendingUp className="h-3 w-3" />
               {kinerjaOptions.find(k => k.value === kinerjaFilter)?.label}
@@ -623,7 +623,7 @@ export default function MembersPage() {
           )}
           <button
             onClick={resetFilters}
-            className="text-xs text-slate-400 hover:text-red-500 transition-colors ml-1 underline underline-offset-2"
+            className="text-xs text-[var(--galactic-diamond)]/60 hover:text-[var(--galactic-rose)] transition-colors ml-1 underline underline-offset-2"
           >
             Hapus semua
           </button>
@@ -634,7 +634,7 @@ export default function MembersPage() {
       {isLoading && members.length === 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1, 2, 3, 4, 5, 6].map(i => (
-            <div key={i} className="h-40 bg-slate-200 rounded-xl animate-pulse" />
+            <div key={i} className="h-40 bg-white/10 rounded-xl animate-pulse" />
           ))}
         </div>
       )}
@@ -667,19 +667,19 @@ export default function MembersPage() {
 
           {!isLoading && filtered.length === 0 && members.length > 0 && (
             <div className="text-center py-16">
-              <Users className="h-16 w-16 text-slate-200 mx-auto mb-4" />
-              <p className="text-slate-400 text-lg">Tidak ada anggota yang cocok dengan pencarian.</p>
-              <p className="text-slate-300 text-sm mt-1">Coba ubah kata kunci atau filter</p>
+              <Users className="h-16 w-16 text-[var(--galactic-diamond)]/60 mx-auto mb-4" />
+              <p className="text-[var(--galactic-diamond)]/60 text-lg">Tidak ada anggota yang cocok dengan pencarian.</p>
+              <p className="text-[var(--galactic-diamond)]/60 text-sm mt-1">Coba ubah kata kunci atau filter</p>
             </div>
           )}
 
           {!isLoading && members.length === 0 && !error && (
             <div className="text-center py-16">
-              <Users className="h-16 w-16 text-slate-200 mx-auto mb-4" />
-              <p className="text-slate-400 text-lg">Belum ada anggota terdaftar.</p>
+              <Users className="h-16 w-16 text-[var(--galactic-diamond)]/60 mx-auto mb-4" />
+              <p className="text-[var(--galactic-diamond)]/60 text-lg">Belum ada anggota terdaftar.</p>
               {isAdmin && (
                 <Button
-                  className="mt-4 bg-blue-600 hover:bg-blue-700"
+                  className="mt-4 bg-[var(--galactic-aurora)] hover:bg-[var(--galactic-cosmic)]"
                   onClick={() => setShowAddForm(true)}
                 >
                   <UserPlus className="mr-2 h-4 w-4" /> Tambah Anggota Pertama
@@ -706,9 +706,9 @@ function GenderSection({
 }) {
   if (members.length === 0) return null;
 
-  const borderColor = color === 'blue' ? 'border-blue-200' : 'border-pink-200';
-  const bgColor = color === 'blue' ? 'bg-blue-50' : 'bg-pink-50';
-  const textColor = color === 'blue' ? 'text-blue-700' : 'text-pink-700';
+  const borderColor = color === 'blue' ? 'border-[var(--galactic-aurora)]/20' : 'border-[var(--galactic-rose)]/20';
+  const bgColor = color === 'blue' ? 'bg-[var(--galactic-aurora)]/10' : 'bg-[var(--galactic-rose)]/10';
+  const textColor = color === 'blue' ? 'text-[var(--galactic-aurora)]' : 'text-[var(--galactic-rose)]';
 
   return (
     <div className="space-y-3">
@@ -734,15 +734,18 @@ function MemberCard({
   member: Member;
   idx: number;
 }) {
-  const genderBadgeColor =
-    member.gender === 'Laki-laki'
-      ? 'bg-blue-100 text-blue-700 ring-blue-200'
-      : 'bg-pink-100 text-pink-700 ring-pink-200';
+  const isMale = member.gender === 'Laki-laki';
+  const genderBadgeColor = isMale
+    ? 'bg-[var(--galactic-aurora)]/10 text-[var(--galactic-aurora)] ring-[var(--galactic-aurora)]/20'
+    : 'bg-[var(--galactic-rose)]/10 text-[var(--galactic-rose)] ring-[var(--galactic-rose)]/20';
+  const cardHoverBorder = isMale
+    ? 'hover:border-[var(--galactic-aurora)]/20'
+    : 'hover:border-[var(--galactic-rose)]/20';
 
   return (
     <Link href={`/members/${member.id}`}>
-      <Card className="shadow-sm border border-slate-200 hover:shadow-lg hover:border-blue-200 transition-all duration-300 cursor-pointer group hover:-translate-y-0.5">
-        <CardContent className="p-5">
+      <GlassCard className={`shadow-[0_0_15px_rgba(255,255,255,0.05)] border border-white/10 hover:shadow-lg ${cardHoverBorder} transition-all duration-300 cursor-pointer group hover:-translate-y-0.5`}>
+        <GlassCardContent className="p-5">
           <div className="flex items-start gap-4">
             {/* Avatar / Photo */}
             {member.photoUrl ? (
@@ -757,13 +760,13 @@ function MemberCard({
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-slate-800 truncate group-hover:text-blue-600 transition-colors">
+                <h3 className={`font-semibold text-[var(--galactic-diamond)] truncate transition-colors ${isMale ? 'group-hover:text-[var(--galactic-aurora)]' : 'group-hover:text-[var(--galactic-rose)]'}`}>
                   {member.name}
                 </h3>
-                <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-blue-500 transition-colors flex-shrink-0" />
+                <ChevronRight className={`h-4 w-4 text-[var(--galactic-diamond)]/60 transition-colors flex-shrink-0 ${isMale ? 'group-hover:text-[var(--galactic-aurora)]' : 'group-hover:text-[var(--galactic-rose)]'}`} />
               </div>
-              {member.position && <p className="text-xs text-slate-400 mt-0.5">{member.position}</p>}
-              <p className="text-sm text-slate-500">{member.department}</p>
+              {member.position && <p className="text-xs text-[var(--galactic-diamond)]/60 mt-0.5">{member.position}</p>}
+              <p className="text-sm text-[var(--galactic-diamond)]/80">{member.department}</p>
               <div className="flex items-center gap-2 mt-1.5">
                 <Badge variant="outline" className={`text-xs font-medium ring-1 ${genderBadgeColor}`}>
                   {member.gender === 'Laki-laki' ? '👨' : '👩'} {member.gender}
@@ -771,14 +774,14 @@ function MemberCard({
               </div>
               {member.email && (
                 <div className="flex items-center gap-2 mt-2">
-                  <Mail className="h-3.5 w-3.5 text-slate-400" />
-                  <span className="text-xs text-slate-400 truncate">{member.email}</span>
+                  <Mail className="h-3.5 w-3.5 text-[var(--galactic-diamond)]/60" />
+                  <span className="text-xs text-[var(--galactic-diamond)]/60 truncate">{member.email}</span>
                 </div>
               )}
               {member.phone && (
                 <div className="flex items-center gap-2 mt-1">
-                  <Phone className="h-3.5 w-3.5 text-slate-400" />
-                  <span className="text-xs text-slate-400">{member.phone}</span>
+                  <Phone className="h-3.5 w-3.5 text-[var(--galactic-diamond)]/60" />
+                  <span className="text-xs text-[var(--galactic-diamond)]/60">{member.phone}</span>
                 </div>
               )}
               <div className="mt-3">
@@ -786,8 +789,8 @@ function MemberCard({
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </GlassCardContent>
+      </GlassCard>
     </Link>
   );
 }

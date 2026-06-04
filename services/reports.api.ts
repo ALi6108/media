@@ -5,7 +5,7 @@ export const reportsApi = {
     api.get('/api/v1/reports'),
 
   preview: (year: number, quarter: number) =>
-    api.get('/api/v1/reports/preview', { params: { year, quarter } }),
+    api.get('/api/v1/reports/preview', { params: { year, quarter, _t: Date.now() } }),
 
   generate: (data: { quarter: number; year: number }) =>
     api.post('/api/v1/reports/generate', data),

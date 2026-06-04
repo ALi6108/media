@@ -24,19 +24,19 @@ interface DataTableProps<T> {
 export function DataTable<T>({ data, columns, keyExtractor }: DataTableProps<T>) {
   if (data.length === 0) {
     return (
-      <div className="p-8 text-center text-slate-500 border border-slate-200 rounded-lg bg-white">
+      <div className="p-8 text-center text-[var(--galactic-diamond)]/70 border border-white/10 rounded-xl">
         Tidak ada data yang ditemukan.
       </div>
     );
   }
 
   return (
-    <div className="border border-slate-200 rounded-lg bg-white overflow-hidden">
+    <div className="border border-white/10 rounded-xl overflow-hidden">
       <Table>
-        <TableHeader className="bg-slate-50">
+        <TableHeader className="bg-white/[0.02]">
           <TableRow>
             {columns.map((col) => (
-              <TableHead key={String(col.key)} className="font-semibold text-slate-700">
+              <TableHead key={String(col.key)} className="font-semibold text-[var(--galactic-diamond)]/90">
                 {col.header}
               </TableHead>
             ))}

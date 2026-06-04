@@ -59,7 +59,7 @@ export default function AuthProvider({
 
     // Role-based route guard
     if (userRole === 'VIEWER') {
-      const adminOnlyRoutes = ['/members/performance', '/settings/users'];
+      const adminOnlyRoutes = ['/members/performance', '/members/add', '/settings/users'];
       if (adminOnlyRoutes.some(route => pathname.startsWith(route))) {
         isRedirecting.current = true;
         router.replace('/');
@@ -71,8 +71,8 @@ export default function AuthProvider({
   // Show loading spinner while waiting for hydration
   if (!isReady) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-50">
-        <div className="w-8 h-8 border-4 border-slate-300 border-t-blue-600 rounded-full animate-spin"></div>
+      <div className="flex items-center justify-center min-h-screen bg-[var(--galactic-obsidian)]">
+        <div className="w-8 h-8 border-4 border-white/[0.08] border-t-[var(--galactic-aurora)] rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -85,8 +85,8 @@ export default function AuthProvider({
   // If not authenticated, show loading while redirecting to login
   if (!accessToken) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-50">
-        <div className="w-8 h-8 border-4 border-slate-300 border-t-blue-600 rounded-full animate-spin"></div>
+      <div className="flex items-center justify-center min-h-screen bg-[var(--galactic-obsidian)]">
+        <div className="w-8 h-8 border-4 border-white/[0.08] border-t-[var(--galactic-aurora)] rounded-full animate-spin"></div>
       </div>
     );
   }

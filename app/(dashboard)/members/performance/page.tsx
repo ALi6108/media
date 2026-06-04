@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useForm, useFieldArray, useWatch, type Control } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { GlassCard, GlassCardContent, GlassCardHeader, GlassCardTitle } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { RatingBadge } from '@/components/shared/RatingBadge';
@@ -36,7 +36,7 @@ function ScoreCell({ control, index }: { control: Control<FormValues>; index: nu
 
   return (
     <div className="flex items-center gap-3">
-      <span className="text-lg font-bold text-slate-800 min-w-[50px]">{finalScore}</span>
+      <span className="text-lg font-bold text-[var(--galactic-diamond)] min-w-[50px]">{finalScore}</span>
       <RatingBadge score={finalScore} showScore={false} />
     </div>
   );
@@ -157,8 +157,8 @@ export default function PerformancePage() {
   if (!mounted) {
     return (
       <div className="animate-pulse space-y-4">
-        <div className="h-20 bg-slate-200 rounded-xl" />
-        <div className="h-96 bg-slate-200 rounded-xl" />
+        <div className="h-20 bg-white/10 rounded-xl" />
+        <div className="h-96 bg-white/10 rounded-xl" />
       </div>
     );
   }
@@ -166,12 +166,12 @@ export default function PerformancePage() {
   if (user?.role !== 'ADMIN') {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-        <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mb-4">
-          <AlertCircle className="h-8 w-8 text-red-500" />
+        <div className="w-16 h-16 rounded-full bg-[var(--galactic-rose)]/10 flex items-center justify-center mb-4">
+          <AlertCircle className="h-8 w-8 text-[var(--galactic-rose)]" />
         </div>
-        <h2 className="text-2xl font-bold text-slate-800">Akses Ditolak</h2>
-        <p className="text-slate-500 mt-2">Halaman ini hanya dapat diakses oleh Admin.</p>
-        <p className="text-sm text-slate-400 mt-1">Error 403 — Forbidden</p>
+        <h2 className="text-2xl font-heading font-bold text-[var(--galactic-diamond)]">Akses Ditolak</h2>
+        <p className="text-[var(--galactic-diamond)]/80 mt-2">Halaman ini hanya dapat diakses oleh Admin.</p>
+        <p className="text-sm text-[var(--galactic-diamond)]/60 mt-1">Error 403 — Forbidden</p>
       </div>
     );
   }
@@ -180,32 +180,32 @@ export default function PerformancePage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800">Input Kinerja Mingguan</h2>
-          <p className="text-slate-500 text-sm mt-1">
+          <h2 className="text-2xl font-heading font-bold text-[var(--galactic-diamond)]">Input Kinerja Mingguan</h2>
+          <p className="text-[var(--galactic-diamond)]/80 text-sm mt-1">
             Masukkan skor IKR dan Kompetensi untuk setiap anggota
           </p>
         </div>
         <div className="flex items-center gap-2 text-sm">
-          <Calculator className="h-4 w-4 text-blue-500" />
-          <span className="text-slate-500">Formula: (IKR × 0.6) + (Kompetensi × 0.4)</span>
+          <Calculator className="h-4 w-4 text-[var(--galactic-aurora-soft)]" />
+          <span className="text-[var(--galactic-diamond)]/80">Formula: (IKR × 0.6) + (Kompetensi × 0.4)</span>
         </div>
       </div>
 
       {/* Period Selector */}
-      <div className="flex flex-wrap items-center gap-3 bg-white rounded-xl border border-slate-200 p-3 shadow-sm">
+      <div className="flex flex-wrap items-center gap-3 bg-white/5 rounded-xl border border-white/10 p-3 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
         <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-slate-600">Tahun:</label>
+          <label className="text-sm font-medium text-[var(--galactic-diamond)]/80">Tahun:</label>
           <select
             value={selectedYear}
             onChange={(e) => setYear(Number(e.target.value))}
-            className="border border-slate-300 rounded-lg px-3 py-1.5 text-sm bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-white/10 rounded-lg px-3 py-1.5 text-sm bg-white/5 text-[var(--galactic-diamond)] focus:outline-none focus:ring-2 focus:ring-[var(--galactic-aurora)]"
           >
             {[2024, 2025, 2026, 2027].map((y) => (
               <option key={y} value={y}>{y}</option>
             ))}
           </select>
         </div>
-        <div className="h-5 w-px bg-slate-200" />
+        <div className="h-5 w-px bg-white/10" />
         <div className="flex items-center gap-2">
           <Button
             type="button"
@@ -216,7 +216,7 @@ export default function PerformancePage() {
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <span className="text-sm font-semibold text-slate-700 min-w-[100px] text-center">
+          <span className="text-sm font-semibold text-[var(--galactic-diamond)] min-w-[100px] text-center">
             Minggu {selectedWeek}
           </span>
           <Button
@@ -233,14 +233,14 @@ export default function PerformancePage() {
 
       {isLoading ? (
         <div className="animate-pulse space-y-4">
-          <div className="h-10 bg-slate-200 rounded-lg w-1/3" />
-          <div className="h-96 bg-slate-200 rounded-xl" />
+          <div className="h-10 bg-white/10 rounded-lg w-1/3" />
+          <div className="h-96 bg-white/10 rounded-xl" />
         </div>
       ) : (
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <Card className="shadow-sm border border-slate-200">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base font-semibold text-slate-700 flex items-center">
+          <GlassCard className="shadow-[0_0_15px_rgba(255,255,255,0.05)] border border-white/10">
+            <GlassCardHeader className="pb-2">
+              <GlassCardTitle className="text-base font-semibold text-[var(--galactic-diamond)] flex items-center">
                 <span>Skor Kinerja — {fields.length} Anggota</span>
                 <Button
                   type="button"
@@ -253,30 +253,30 @@ export default function PerformancePage() {
                 >
                   <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
                 </Button>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+              </GlassCardTitle>
+            </GlassCardHeader>
+            <GlassCardContent>
               {fields.length === 0 ? (
-                <p className="text-slate-500 text-center py-8">Tidak ada anggota aktif.</p>
+                <p className="text-[var(--galactic-diamond)]/80 text-center py-8">Tidak ada anggota aktif.</p>
               ) : (
                 <>
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="border-b border-slate-200">
-                          <th className="text-left py-3 px-4 font-semibold text-slate-600 w-8">#</th>
-                          <th className="text-left py-3 px-4 font-semibold text-slate-600">Nama Anggota</th>
-                          <th className="text-left py-3 px-4 font-semibold text-slate-600 w-36">IKR (60%)</th>
-                          <th className="text-left py-3 px-4 font-semibold text-slate-600 w-36">Kompetensi (40%)</th>
-                          <th className="text-left py-3 px-4 font-semibold text-slate-600">Skor Akhir & Rating</th>
+                        <tr className="border-b border-white/10">
+                          <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80 w-8">#</th>
+                          <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80">Nama Anggota</th>
+                          <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80 w-36">IKR (60%)</th>
+                          <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80 w-36">Kompetensi (40%)</th>
+                          <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80">Skor Akhir & Rating</th>
                         </tr>
                       </thead>
                       <tbody>
                         {fields.map((field, index) => (
-                          <tr key={field.id} className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
-                            <td className="py-3 px-4 text-slate-400 font-mono">{index + 1}</td>
+                          <tr key={field.id} className="border-b border-white/5 hover:bg-white/[0.02]/50 transition-colors">
+                            <td className="py-3 px-4 text-[var(--galactic-diamond)]/60 font-mono">{index + 1}</td>
                             <td className="py-3 px-4">
-                              <span className="font-medium text-slate-700">{form.getValues(`entries.${index}.memberName`)}</span>
+                              <span className="font-medium text-[var(--galactic-diamond)]">{form.getValues(`entries.${index}.memberName`)}</span>
                             </td>
                             <td className="py-3 px-4">
                               <Input
@@ -287,7 +287,7 @@ export default function PerformancePage() {
                                 {...form.register(`entries.${index}.ikrScore`, { valueAsNumber: true })}
                               />
                               {form.formState.errors.entries?.[index]?.ikrScore && (
-                                <p className="text-xs text-red-500 mt-1">0-100</p>
+                                <p className="text-xs text-[var(--galactic-rose)] mt-1">0-100</p>
                               )}
                             </td>
                             <td className="py-3 px-4">
@@ -299,7 +299,7 @@ export default function PerformancePage() {
                                 {...form.register(`entries.${index}.competencyScore`, { valueAsNumber: true })}
                               />
                               {form.formState.errors.entries?.[index]?.competencyScore && (
-                                <p className="text-xs text-red-500 mt-1">0-100</p>
+                                <p className="text-xs text-[var(--galactic-rose)] mt-1">0-100</p>
                               )}
                             </td>
                             <td className="py-3 px-4">
@@ -311,8 +311,8 @@ export default function PerformancePage() {
                     </table>
                   </div>
 
-                  <div className="flex justify-end mt-6 pt-4 border-t border-slate-200">
-                    <Button type="submit" disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 px-8">
+                  <div className="flex justify-end mt-6 pt-4 border-t border-white/10">
+                    <Button type="submit" disabled={isSubmitting} className="bg-[var(--galactic-aurora)] hover:bg-[var(--galactic-cosmic)] px-8">
                       {isSubmitting ? (
                         <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Menyimpan...</>
                       ) : (
@@ -322,8 +322,8 @@ export default function PerformancePage() {
                   </div>
                 </>
               )}
-            </CardContent>
-          </Card>
+            </GlassCardContent>
+          </GlassCard>
         </form>
       )}
     </div>

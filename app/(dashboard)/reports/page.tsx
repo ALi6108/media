@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { GlassCard, GlassCardContent, GlassCardHeader, GlassCardTitle, GlassCardDescription as CardDescription } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -54,6 +54,7 @@ export default function ReportsPage() {
   const [genTitle, setGenTitle] = useState('');
   const [previewData, setPreviewData] = useState<PreviewData | null>(null);
   const [previewLoading, setPreviewLoading] = useState(false);
+  const [previewRefreshedAt, setPreviewRefreshedAt] = useState<string | null>(null);
   const [generating, setGenerating] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
@@ -86,6 +87,7 @@ export default function ReportsPage() {
   async function handlePreview() {
     setPreviewLoading(true);
     setPreviewData(null);
+    setPreviewRefreshedAt(null);
     try {
       const res = await reportsApi.preview(genYear, genQuarter);
       const raw = res.data;
@@ -116,11 +118,12 @@ export default function ReportsPage() {
         top_performer: top ? { full_name: top.member_name, final_score: top.avg_final } : null,
         members: members.map((m: Record<string, unknown>) => ({
           full_name: m.member_name as string,
-          avg_ikr: 0,
-          avg_competency: 0,
+          avg_ikr: (m.avg_ikr as number) || 0,
+          avg_competency: (m.avg_competency as number) || 0,
           avg_final: m.avg_final as number,
         })),
       });
+      setPreviewRefreshedAt(new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
     } catch (err: unknown) {
       const axiosErr = err as { response?: { data?: { message?: string } } };
       toast.error(axiosErr?.response?.data?.message || 'Gagal memuat data preview');
@@ -235,12 +238,12 @@ export default function ReportsPage() {
   if (!mounted) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-10 w-64 bg-slate-200 rounded-lg" />
+        <div className="h-10 w-64 bg-white/10 rounded-lg" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="h-48 bg-slate-200 rounded-xl" />
-          <div className="h-48 bg-slate-200 rounded-xl" />
+          <div className="h-48 bg-white/10 rounded-xl" />
+          <div className="h-48 bg-white/10 rounded-xl" />
         </div>
-        <div className="h-64 bg-slate-200 rounded-xl" />
+        <div className="h-64 bg-white/10 rounded-xl" />
       </div>
     );
   }
@@ -248,12 +251,12 @@ export default function ReportsPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="h-10 w-64 bg-slate-200 rounded-lg animate-pulse" />
+        <div className="h-10 w-64 bg-white/10 rounded-lg animate-pulse" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="h-48 bg-slate-200 rounded-xl animate-pulse" />
-          <div className="h-48 bg-slate-200 rounded-xl animate-pulse" />
+          <div className="h-48 bg-white/10 rounded-xl animate-pulse" />
+          <div className="h-48 bg-white/10 rounded-xl animate-pulse" />
         </div>
-        <div className="h-64 bg-slate-200 rounded-xl animate-pulse" />
+        <div className="h-64 bg-white/10 rounded-xl animate-pulse" />
       </div>
     );
   }
@@ -261,12 +264,12 @@ export default function ReportsPage() {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-        <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mb-4">
-          <AlertCircle className="h-8 w-8 text-red-500" />
+        <div className="w-16 h-16 rounded-full bg-[var(--galactic-rose)]/10 flex items-center justify-center mb-4">
+          <AlertCircle className="h-8 w-8 text-[var(--galactic-rose)]" />
         </div>
-        <h2 className="text-xl font-bold text-slate-800">Gagal Memuat Data</h2>
-        <p className="text-slate-500 mt-2">{error}</p>
-        <Button onClick={fetchReports} className="mt-4 bg-blue-600 hover:bg-blue-700">
+        <h2 className="text-xl font-bold text-[var(--galactic-diamond)]">Gagal Memuat Data</h2>
+        <p className="text-[var(--galactic-diamond)]/80 mt-2">{error}</p>
+        <Button onClick={fetchReports} className="mt-4 bg-[var(--galactic-aurora)] hover:bg-[var(--galactic-cosmic)]">
           Coba Lagi
         </Button>
       </div>
@@ -277,22 +280,22 @@ export default function ReportsPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800">Laporan Kinerja</h2>
-          <p className="text-slate-500 text-sm mt-1">
+          <h2 className="text-2xl font-heading font-bold text-[var(--galactic-diamond)]">Laporan Kinerja</h2>
+          <p className="text-[var(--galactic-diamond)]/80 text-sm mt-1">
             Kelola dan unduh laporan kinerja kuartalan
           </p>
         </div>
       </div>
 
       {isAdmin && (
-        <Card className="shadow-sm border border-slate-200">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base font-semibold text-slate-700 flex items-center gap-2">
+        <GlassCard className="shadow-[0_0_15px_rgba(255,255,255,0.05)] border border-white/10">
+          <GlassCardHeader className="pb-3">
+            <GlassCardTitle className="text-base font-semibold text-[var(--galactic-diamond)] flex items-center gap-2">
               <Plus className="h-4 w-4" />
               Generate Laporan Baru
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+            </GlassCardTitle>
+          </GlassCardHeader>
+          <GlassCardContent>
             <div className="flex flex-wrap items-end gap-4 mb-4">
               <div className="space-y-1.5">
                 <Label htmlFor="quarter">Kuartal</Label>
@@ -300,7 +303,7 @@ export default function ReportsPage() {
                   id="quarter"
                   value={genQuarter}
                   onChange={(e) => setGenQuarter(Number(e.target.value))}
-                  className="flex h-9 w-20 rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                  className="flex h-9 w-20 rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
                 >
                   {[1, 2, 3, 4].map((q) => (
                     <option key={q} value={q}>Q{q}</option>
@@ -313,7 +316,7 @@ export default function ReportsPage() {
                   id="year"
                   value={genYear}
                   onChange={(e) => setGenYear(Number(e.target.value))}
-                  className="flex h-9 w-24 rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                  className="flex h-9 w-24 rounded-lg border border-input bg-transparent px-3 py-1 text-sm shadow-[0_0_15px_rgba(255,255,255,0.05)] transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
                 >
                   {yearOptions.map((y) => (
                     <option key={y} value={y}>{y}</option>
@@ -332,7 +335,7 @@ export default function ReportsPage() {
               <Button
                 onClick={handlePreview}
                 disabled={previewLoading}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-[var(--galactic-aurora)] hover:bg-[var(--galactic-cosmic)]"
               >
                 {previewLoading ? (
                   <><Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> Memuat...</>
@@ -343,101 +346,119 @@ export default function ReportsPage() {
             </div>
 
             {previewLoading && (
-              <div className="animate-pulse space-y-4 pt-4 border-t border-slate-100">
+              <div className="animate-pulse space-y-4 pt-4 border-t border-white/5">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="h-20 bg-slate-200 rounded-lg" />
+                    <div key={i} className="h-20 bg-white/10 rounded-lg" />
                   ))}
                 </div>
-                <div className="h-40 bg-slate-200 rounded-lg" />
+                <div className="h-40 bg-white/10 rounded-lg" />
               </div>
             )}
 
             {previewData && !previewLoading && (
-              <div className="pt-4 border-t border-slate-100 space-y-4">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-semibold text-slate-700 text-sm">
-                    Preview — Q{previewData.quarter} {previewData.year}
-                  </h4>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setPreviewData(null)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
+              <div className="pt-4 border-t border-white/5 space-y-4">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-3">
+                    <h4 className="font-semibold text-[var(--galactic-diamond)] text-sm">
+                      Preview — Q{previewData.quarter} {previewData.year}
+                    </h4>
+                    {previewRefreshedAt && (
+                      <span className="text-xs text-[var(--galactic-diamond)]/60">
+                        Diperbarui {previewRefreshedAt}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handlePreview}
+                      disabled={previewLoading}
+                      title="Refresh preview"
+                    >
+                      <Loader2 className={`h-4 w-4 ${previewLoading ? 'animate-spin' : ''}`} />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setPreviewData(null)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <div className="bg-slate-50 rounded-lg p-3 text-center">
-                    <p className="text-xs text-slate-500">Total Anggota</p>
-                    <p className="text-xl font-bold text-slate-800">{previewData.total_members}</p>
+                  <div className="bg-white/[0.02] rounded-lg p-3 text-center">
+                    <p className="text-xs text-[var(--galactic-diamond)]/80">Total Anggota</p>
+                    <p className="text-xl font-bold text-[var(--galactic-diamond)]">{previewData.total_members}</p>
                   </div>
-                  <div className="bg-blue-50 rounded-lg p-3 text-center">
-                    <p className="text-xs text-blue-500">Rata-rata IKR</p>
-                    <p className="text-xl font-bold text-blue-700">{previewData.avg_ikr}</p>
+                  <div className="bg-[var(--galactic-aurora)]/10 rounded-lg p-3 text-center">
+                    <p className="text-xs text-[var(--galactic-aurora-soft)]">Rata-rata IKR</p>
+                    <p className="text-xl font-bold text-[var(--galactic-aurora)]">{previewData.avg_ikr}</p>
                   </div>
-                  <div className="bg-violet-50 rounded-lg p-3 text-center">
-                    <p className="text-xs text-violet-500">Rata-rata Kompetensi</p>
-                    <p className="text-xl font-bold text-violet-700">{previewData.avg_competency}</p>
+                  <div className="bg-[var(--galactic-aurora)]/10 rounded-lg p-3 text-center">
+                    <p className="text-xs text-[var(--galactic-aurora-soft)]">Rata-rata Kompetensi</p>
+                    <p className="text-xl font-bold text-[var(--galactic-aurora)]">{previewData.avg_competency}</p>
                   </div>
-                  <div className="bg-emerald-50 rounded-lg p-3 text-center">
-                    <p className="text-xs text-emerald-500">Rata-rata Final</p>
-                    <p className="text-xl font-bold text-emerald-700">{previewData.avg_final}</p>
+                  <div className="bg-[var(--galactic-emerald)]/10 rounded-lg p-3 text-center">
+                    <p className="text-xs text-[var(--galactic-emerald)]">Rata-rata Final</p>
+                    <p className="text-xl font-bold text-[var(--galactic-emerald)]">{previewData.avg_final}</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <p className="text-xs font-medium text-slate-500 mb-2">Distribusi Rating</p>
+                    <p className="text-xs font-medium text-[var(--galactic-diamond)]/80 mb-2">Distribusi Rating</p>
                     <div className="space-y-1.5">
                       {Object.entries(previewData.rating_distribution).map(([key, value]) => (
                         <div key={key} className="flex items-center justify-between text-sm">
-                          <span className="text-slate-600">{ratingLabel[key] || key}</span>
-                          <span className="font-semibold text-slate-800">{value}</span>
+                          <span className="text-[var(--galactic-diamond)]/80">{ratingLabel[key] || key}</span>
+                          <span className="font-semibold text-[var(--galactic-diamond)]">{value}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <p className="text-xs font-medium text-slate-500 mb-2">Performa Terbaik</p>
+                    <p className="text-xs font-medium text-[var(--galactic-diamond)]/80 mb-2">Performa Terbaik</p>
                     {previewData.top_performer ? (
-                      <div className="bg-amber-50 rounded-lg p-3">
-                        <p className="font-semibold text-slate-800">{previewData.top_performer.full_name}</p>
-                        <p className="text-sm text-amber-700">
+                      <div className="bg-[var(--galactic-amber)]/10 rounded-lg p-3">
+                        <p className="font-semibold text-[var(--galactic-diamond)]">{previewData.top_performer.full_name}</p>
+                        <p className="text-sm text-[var(--galactic-amber)]">
                           Skor Final: {previewData.top_performer.final_score}
                           {' '}<RatingBadge score={previewData.top_performer.final_score} />
                         </p>
                       </div>
                     ) : (
-                      <p className="text-sm text-slate-400">Tidak ada data</p>
+                      <p className="text-sm text-[var(--galactic-diamond)]/60">Tidak ada data</p>
                     )}
                   </div>
                 </div>
 
                 {previewData.members && previewData.members.length > 0 && (
                   <div>
-                    <p className="text-xs font-medium text-slate-500 mb-2">
+                    <p className="text-xs font-medium text-[var(--galactic-diamond)]/80 mb-2">
                       Daftar Anggota ({previewData.members.length})
                     </p>
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm">
                         <thead>
-                          <tr className="border-b border-slate-200">
-                            <th className="text-left py-2 px-3 font-semibold text-slate-600">Nama</th>
-                            <th className="text-left py-2 px-3 font-semibold text-slate-600">Rata-rata IKR</th>
-                            <th className="text-left py-2 px-3 font-semibold text-slate-600">Rata-rata Kompetensi</th>
-                            <th className="text-left py-2 px-3 font-semibold text-slate-600">Rata-rata Final</th>
-                            <th className="text-left py-2 px-3 font-semibold text-slate-600">Rating</th>
+                          <tr className="border-b border-white/10">
+                            <th className="text-left py-2 px-3 font-semibold text-[var(--galactic-diamond)]/80">Nama</th>
+                            <th className="text-left py-2 px-3 font-semibold text-[var(--galactic-diamond)]/80">Rata-rata IKR</th>
+                            <th className="text-left py-2 px-3 font-semibold text-[var(--galactic-diamond)]/80">Rata-rata Kompetensi</th>
+                            <th className="text-left py-2 px-3 font-semibold text-[var(--galactic-diamond)]/80">Rata-rata Final</th>
+                            <th className="text-left py-2 px-3 font-semibold text-[var(--galactic-diamond)]/80">Rating</th>
                           </tr>
                         </thead>
                         <tbody>
                           {previewData.members.map((m, idx) => (
-                            <tr key={idx} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                              <td className="py-2 px-3 font-medium text-slate-800">{m.full_name}</td>
-                              <td className="py-2 px-3 text-slate-600">{m.avg_ikr}</td>
-                              <td className="py-2 px-3 text-slate-600">{m.avg_competency}</td>
-                              <td className="py-2 px-3 font-semibold text-slate-800">{m.avg_final}</td>
+                            <tr key={idx} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                              <td className="py-2 px-3 font-medium text-[var(--galactic-diamond)]">{m.full_name}</td>
+                              <td className="py-2 px-3 text-[var(--galactic-diamond)]/80">{m.avg_ikr}</td>
+                              <td className="py-2 px-3 text-[var(--galactic-diamond)]/80">{m.avg_competency}</td>
+                              <td className="py-2 px-3 font-semibold text-[var(--galactic-diamond)]">{m.avg_final}</td>
                               <td className="py-2 px-3"><RatingBadge score={m.avg_final} /></td>
                             </tr>
                           ))}
@@ -463,7 +484,7 @@ export default function ReportsPage() {
                   <Button
                     onClick={handleGenerate}
                     disabled={generating}
-                    className="bg-blue-600 hover:bg-blue-700"
+                    className="bg-[var(--galactic-aurora)] hover:bg-[var(--galactic-cosmic)]"
                   >
                     {generating ? (
                       <><Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> Membuat...</>
@@ -476,12 +497,12 @@ export default function ReportsPage() {
             )}
 
             {/* Upload Laporan */}
-            <div className="pt-6 border-t border-slate-200 mt-6">
-              <h4 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+            <div className="pt-6 border-t border-white/10 mt-6">
+              <h4 className="text-sm font-semibold text-[var(--galactic-diamond)] mb-3 flex items-center gap-2">
                 <Download className="h-4 w-4" />
                 Upload Laporan Manual
               </h4>
-              <p className="text-xs text-slate-400 mb-3">
+              <p className="text-xs text-[var(--galactic-diamond)]/60 mb-3">
                 Upload file laporan (PDF, Excel, Word, MD, dll) untuk periode tertentu
               </p>
               <div className="flex flex-wrap items-end gap-3">
@@ -499,7 +520,7 @@ export default function ReportsPage() {
                   onClick={handleUpload}
                   disabled={!uploadFile || uploading}
                   variant="outline"
-                  className="border-blue-200 text-blue-600 hover:bg-blue-50"
+                  className="border-[var(--galactic-aurora)]/20 text-[var(--galactic-aurora)] hover:bg-[var(--galactic-aurora)]/10"
                 >
                   {uploading ? (
                     <><Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> Mengupload...</>
@@ -509,29 +530,29 @@ export default function ReportsPage() {
                 </Button>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </GlassCardContent>
+        </GlassCard>
       )}
 
-      <Card className="shadow-sm border border-slate-200">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base font-semibold text-slate-700">
+      <GlassCard className="shadow-[0_0_15px_rgba(255,255,255,0.05)] border border-white/10">
+        <GlassCardHeader className="pb-3">
+          <GlassCardTitle className="text-base font-semibold text-[var(--galactic-diamond)]">
             Laporan yang sudah ada
-          </CardTitle>
+          </GlassCardTitle>
           {reports.length > 0 && (
             <CardDescription>
               {reports.length} laporan tersedia
             </CardDescription>
           )}
-        </CardHeader>
-        <CardContent>
+        </GlassCardHeader>
+        <GlassCardContent>
           {reports.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12">
-              <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-                <FileText className="h-8 w-8 text-slate-400" />
+              <div className="w-16 h-16 rounded-full bg-white/[0.03] flex items-center justify-center mb-4">
+                <FileText className="h-8 w-8 text-[var(--galactic-diamond)]/60" />
               </div>
-              <p className="text-slate-500 font-medium">Belum ada laporan</p>
-              <p className="text-slate-400 text-sm mt-1">
+              <p className="text-[var(--galactic-diamond)]/80 font-medium">Belum ada laporan</p>
+              <p className="text-[var(--galactic-diamond)]/60 text-sm mt-1">
                 {isAdmin
                   ? 'Gunakan fitur Generate Laporan Baru untuk membuat laporan pertama'
                   : 'Belum ada laporan yang tersedia'}
@@ -541,25 +562,25 @@ export default function ReportsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-slate-200">
-                    <th className="text-left py-3 px-4 font-semibold text-slate-600">Judul</th>
-                    <th className="text-left py-3 px-4 font-semibold text-slate-600">Kuartal</th>
-                    <th className="text-left py-3 px-4 font-semibold text-slate-600">Tahun</th>
-                    <th className="text-left py-3 px-4 font-semibold text-slate-600">Tanggal Generate</th>
-                    <th className="text-left py-3 px-4 font-semibold text-slate-600">Aksi</th>
+                  <tr className="border-b border-white/10">
+                    <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80">Judul</th>
+                    <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80">Kuartal</th>
+                    <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80">Tahun</th>
+                    <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80">Tanggal Generate</th>
+                    <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
                   {reports.map((report) => (
-                    <tr key={report.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                      <td className="py-3 px-4 font-medium text-slate-800">{report.title}</td>
+                    <tr key={report.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                      <td className="py-3 px-4 font-medium text-[var(--galactic-diamond)]">{report.title}</td>
                       <td className="py-3 px-4">
                         <Badge variant="outline" className="text-xs">
                           Q{report.quarter}
                         </Badge>
                       </td>
-                      <td className="py-3 px-4 text-slate-600">{report.year}</td>
-                      <td className="py-3 px-4 text-slate-600 text-xs">
+                      <td className="py-3 px-4 text-[var(--galactic-diamond)]/80">{report.year}</td>
+                      <td className="py-3 px-4 text-[var(--galactic-diamond)]/80 text-xs">
                         {formatDate(report.generated_at)}
                       </td>
                       <td className="py-3 px-4">
@@ -592,8 +613,8 @@ export default function ReportsPage() {
               </table>
             </div>
           )}
-        </CardContent>
-      </Card>
+        </GlassCardContent>
+      </GlassCard>
     </div>
   );
 }

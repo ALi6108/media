@@ -22,11 +22,11 @@ export function PeriodSelector({
 
   return (
     <div className="flex items-center gap-3">
-      <Filter className="h-4 w-4 text-slate-400" />
+      <Filter className="h-4 w-4 text-[var(--galactic-diamond)]/60" />
       <select
         value={year}
         onChange={(e) => onYearChange(Number(e.target.value))}
-        className="h-8 rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+        className="h-8 rounded-lg border border-white/10 bg-white px-2 text-sm text-[var(--galactic-diamond)]/90 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
       >
         {years.map((y) => (
           <option key={y} value={y}>{y}</option>
@@ -36,7 +36,7 @@ export function PeriodSelector({
         <select
           value={week}
           onChange={(e) => onWeekChange(Number(e.target.value))}
-          className="h-8 rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+          className="h-8 rounded-lg border border-white/10 bg-white px-2 text-sm text-[var(--galactic-diamond)]/90 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
         >
           {weeks.map((w) => (
             <option key={w} value={w}>W{w}</option>

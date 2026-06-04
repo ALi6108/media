@@ -29,7 +29,7 @@ export function MobileNav() {
     <div className="md:hidden">
       <button
         onClick={() => setOpen(true)}
-        className="p-2 text-slate-500 hover:text-slate-700"
+        className="p-2 text-[var(--galactic-diamond)]/70 hover:text-[var(--galactic-diamond)]"
         aria-label="Buka menu"
       >
         <Menu className="h-6 w-6" />
@@ -38,10 +38,10 @@ export function MobileNav() {
       {open && (
         <div className="fixed inset-0 z-50">
           <div className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
-          <div className="absolute left-0 top-0 bottom-0 w-64 bg-slate-900 text-white shadow-xl animate-in slide-in-from-left duration-200">
-            <div className="h-16 flex items-center justify-between px-6 border-b border-slate-800">
+          <div className="absolute left-0 top-0 bottom-0 w-64 bg-[var(--galactic-obsidian)] text-white shadow-xl animate-in slide-in-from-left duration-200">
+            <div className="h-16 flex items-center justify-between px-6 border-b border-white/5">
               <span className="text-lg font-bold">Media Analytics</span>
-              <button onClick={() => setOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setOpen(false)} className="text-[var(--galactic-diamond)]/80 hover:text-[var(--galactic-platinum)]">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -56,7 +56,7 @@ export function MobileNav() {
                     onClick={() => setOpen(false)}
                     className={cn(
                       'flex items-center px-3 py-2.5 text-sm font-medium rounded-md transition-colors',
-                      isActive ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white',
+                      isActive ? 'bg-[var(--galactic-aurora)] text-[var(--galactic-platinum)]' : 'text-[var(--galactic-diamond)]/70 hover:bg-white/[0.05] hover:text-[var(--galactic-platinum)]',
                     )}
                   >
                     <Icon className="mr-3 h-5 w-5" />

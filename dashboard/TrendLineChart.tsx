@@ -1,6 +1,6 @@
-﻿'use client';
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from '@/components/ui/glass-card';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from 'recharts';
@@ -18,42 +18,78 @@ interface TrendLineChartProps {
 
 export function TrendLineChart({ data }: TrendLineChartProps) {
   return (
-    <Card className="shadow-sm border border-slate-200">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base font-semibold text-slate-700">
+    <GlassCard>
+      <GlassCardHeader className="pb-2">
+        <GlassCardTitle className="text-base">
           Tren Rata-rata Kinerja Tim
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
+        </GlassCardTitle>
+      </GlassCardHeader>
+      <GlassCardContent>
         <div className="h-72">
           {data.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="week" tick={{ fontSize: 12, fill: '#64748b' }} />
-                <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: '#64748b' }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                <XAxis 
+                  dataKey="week" 
+                  tick={{ fontSize: 11, fill: 'rgba(232,224,240,0.6)' }} 
+                  axisLine={{ stroke: 'rgba(255,255,255,0.1)' }} 
+                  tickLine={{ stroke: 'rgba(255,255,255,0.1)' }} 
+                />
+                <YAxis 
+                  domain={[0, 100]} 
+                  tick={{ fontSize: 11, fill: 'rgba(232,224,240,0.6)' }} 
+                  axisLine={{ stroke: 'rgba(255,255,255,0.1)' }} 
+                  tickLine={{ stroke: 'rgba(255,255,255,0.1)' }} 
+                />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#1e293b',
-                    border: 'none',
-                    borderRadius: '8px',
-                    color: '#fff',
+                    backgroundColor: 'rgba(18,8,37,0.8)',
+                    backdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '1rem',
+                    color: '#e8e0f0',
                     fontSize: '12px',
                   }}
+                  itemStyle={{ color: '#e8e0f0' }}
                 />
-                <Legend wrapperStyle={{ fontSize: '12px' }} />
-                <Line type="monotone" dataKey="avgIkr" name="Rata-rata IKR" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4 }} />
-                <Line type="monotone" dataKey="avgComp" name="Rata-rata Kompetensi" stroke="#8b5cf6" strokeWidth={2} dot={{ r: 4 }} />
-                <Line type="monotone" dataKey="avgFinal" name="Rata-rata Final" stroke="#10b981" strokeWidth={2} dot={{ r: 4 }} />
+                <Legend wrapperStyle={{ fontSize: '12px', color: 'rgba(232,224,240,0.8)' }} />
+                <Line 
+                  type="monotone" 
+                  dataKey="avgIkr" 
+                  name="Rata-rata IKR" 
+                  stroke="#3b82f6" 
+                  strokeWidth={3} 
+                  dot={{ r: 4, strokeWidth: 2, fill: '#0a0e27', stroke: '#3b82f6' }} 
+                  activeDot={{ r: 6, strokeWidth: 2, stroke: '#fff', fill: '#3b82f6' }}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="avgComp" 
+                  name="Rata-rata Kompetensi" 
+                  stroke="#ec4899" 
+                  strokeWidth={3} 
+                  dot={{ r: 4, strokeWidth: 2, fill: '#0a0e27', stroke: '#ec4899' }} 
+                  activeDot={{ r: 6, strokeWidth: 2, stroke: '#fff', fill: '#ec4899' }}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="avgFinal" 
+                  name="Rata-rata Final" 
+                  stroke="#ffffff" 
+                  strokeWidth={3} 
+                  dot={{ r: 4, strokeWidth: 2, fill: '#0a0e27', stroke: '#ffffff' }} 
+                  activeDot={{ r: 6, strokeWidth: 2, stroke: '#fff', fill: '#ffffff' }}
+                />
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-full flex items-center justify-center text-slate-400">
+            <div className="h-full flex items-center justify-center text-[var(--galactic-diamond)]/60">
               Belum ada data tren
             </div>
           )}
         </div>
-      </CardContent>
-    </Card>
+      </GlassCardContent>
+    </GlassCard>
   );
 }

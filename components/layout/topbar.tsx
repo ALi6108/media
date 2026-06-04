@@ -1,41 +1,41 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { Bell, Search } from 'lucide-react';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
 
 export function Topbar() {
   const pathname = usePathname();
-  
+  const [now, setNow] = useState(new Date());
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const timer = setInterval(() => setNow(new Date()), 60000);
+    return () => clearInterval(timer);
+  }, []);
+
   // Format pathname to display as title
   const getPageTitle = () => {
     if (pathname === '/') return 'Dashboard';
     const path = pathname.split('/')[1];
     if (!path) return 'Dashboard';
-    
-    // Convert from kebab-case to Title Case
     return path.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   };
 
+  const formattedDate = mounted
+    ? now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+    : '';
+
   return (
-    <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-10">
-      <h1 className="text-xl font-semibold text-slate-800">{getPageTitle()}</h1>
+    <header className="h-16 glass border-b border-white/5 !ring-0 flex items-center justify-between px-8 sticky top-0 z-30">
+      <h1 className="text-2xl font-heading font-semibold tracking-tight text-[var(--galactic-diamond)] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)]">
+        {getPageTitle()}
+      </h1>
       
-      <div className="flex items-center space-x-4">
-        <div className="relative hidden md:block">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-400" />
-          <Input 
-            type="search" 
-            placeholder="Cari..." 
-            className="w-64 pl-9 bg-slate-50 border-slate-200 focus-visible:ring-blue-500 rounded-full h-9"
-          />
-        </div>
-        
-        <Button variant="ghost" size="icon" className="text-slate-500 hover:text-slate-700 relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
-        </Button>
+      <div className="flex items-center">
+        <span className="text-sm text-[var(--galactic-diamond)]/70 font-medium tracking-wide">
+          {formattedDate}
+        </span>
       </div>
     </header>
   );

@@ -34,15 +34,15 @@ export function ConfirmDialog({
       <div className="relative bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6 animate-in zoom-in-95 duration-200">
         <div className="flex items-start gap-4">
           <div className={`p-2 rounded-full flex-shrink-0 ${
-            variant === 'danger' ? 'bg-red-100' : 'bg-slate-100'
+            variant === 'danger' ? 'bg-red-100' : 'bg-white/[0.03]'
           }`}>
             <AlertTriangle className={`h-5 w-5 ${
-              variant === 'danger' ? 'text-red-600' : 'text-slate-600'
+              variant === 'danger' ? 'text-red-600' : 'text-[var(--galactic-diamond)]/80'
             }`} />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-slate-800">{title}</h3>
-            <p className="text-sm text-slate-500 mt-1">{message}</p>
+            <h3 className="text-lg font-semibold text-[var(--galactic-diamond)]">{title}</h3>
+            <p className="text-sm text-[var(--galactic-diamond)]/70 mt-1">{message}</p>
           </div>
         </div>
         <div className="flex justify-end gap-3 mt-6">

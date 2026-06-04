@@ -12,9 +12,9 @@ export function ForbiddenPage() {
       <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mb-4">
         <AlertCircle className="h-8 w-8 text-red-500" />
       </div>
-      <h2 className="text-2xl font-bold text-slate-800">Akses Ditolak</h2>
-      <p className="text-slate-500 mt-2">Halaman ini hanya dapat diakses oleh Admin.</p>
-      <p className="text-sm text-slate-400 mt-1">Error 403 — Forbidden</p>
+      <h2 className="text-2xl font-heading font-bold text-[var(--galactic-diamond)]">Akses Ditolak</h2>
+      <p className="text-[var(--galactic-diamond)]/70 mt-2">Halaman ini hanya dapat diakses oleh Admin.</p>
+      <p className="text-sm text-[var(--galactic-diamond)]/60 mt-1">Error 403 — Forbidden</p>
       <Button
         variant="outline"
         className="mt-4"

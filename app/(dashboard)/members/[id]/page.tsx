@@ -4,12 +4,13 @@ import { use } from 'react';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { GlassCard, GlassCardContent, GlassCardHeader, GlassCardTitle } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { RatingBadge } from '@/components/shared/RatingBadge';
 import { useMemberStore, Gender, Member } from '@/store/memberStore';
+import { useAuthStore } from '@/store/authStore';
 import { performanceApi } from '@/services/performance.api';
 import {
   ArrowLeft, Mail, Calendar, Briefcase, Save, X, Pencil,
@@ -31,6 +32,8 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
   const [saveError, setSaveError] = useState('');
   const [isLoadingDetail, setIsLoadingDetail] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { user: authUser } = useAuthStore();
+  const isAdmin = authUser?.role === 'ADMIN';
 
   // Edit form state
   const [editData, setEditData] = useState({
@@ -87,9 +90,9 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
   if (!mounted || (!effectiveMember && isLoadingDetail)) {
     return (
       <div className="animate-pulse space-y-4">
-        <div className="h-10 w-40 bg-slate-200 rounded-lg" />
-        <div className="h-48 bg-slate-200 rounded-xl" />
-        <div className="h-72 bg-slate-200 rounded-xl" />
+        <div className="h-10 w-40 bg-white/10 rounded-lg" />
+        <div className="h-48 bg-white/10 rounded-xl" />
+        <div className="h-72 bg-white/10 rounded-xl" />
       </div>
     );
   }
@@ -97,7 +100,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
   if (!effectiveMember) {
     return (
       <div className="text-center py-20">
-        <p className="text-slate-400 text-lg">Anggota tidak ditemukan.</p>
+        <p className="text-[var(--galactic-diamond)]/60 text-lg">Anggota tidak ditemukan.</p>
         <Link href="/members">
           <Button variant="ghost" className="mt-4">
             <ArrowLeft className="mr-2 h-4 w-4" /> Kembali ke Daftar
@@ -109,7 +112,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
 
   function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    if (file && member) {
+    if (file && member && isAdmin) {
       const reader = new FileReader();
       reader.onloadend = () => {
         const photoUrl = reader.result as string;
@@ -121,7 +124,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
   }
 
   async function handleSaveProfile() {
-    if (!member) return;
+    if (!member || !isAdmin) return;
     setIsSaving(true);
     setSaveError('');
     try {
@@ -141,7 +144,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
   }
 
   async function handleSavePerformance() {
-    if (!effectiveMember) return;
+    if (!effectiveMember || !isAdmin) return;
     setIsSaving(true);
     setSaveError('');
     try {
@@ -192,6 +195,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
   }
 
   function handleDeletePerformanceWeek(index: number) {
+    if (!isAdmin) return;
     const entry = editPerformance[index];
     if (entry.id) {
       // Delete from API
@@ -208,7 +212,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
   }
 
   async function handleDeleteMember() {
-    if (!member) return;
+    if (!member || !isAdmin) return;
     if (confirm('Apakah Anda yakin ingin menghapus anggota ini?')) {
       try {
         await deleteMember(member.id);
@@ -221,8 +225,8 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
 
   const genderColor = effectiveMember.gender === 'Laki-laki' ? 'from-blue-500 to-indigo-600' : 'from-pink-500 to-rose-600';
   const genderBadgeColor = effectiveMember.gender === 'Laki-laki'
-    ? 'bg-blue-100 text-blue-700'
-    : 'bg-pink-100 text-pink-700';
+    ? 'bg-[var(--galactic-aurora)]/10 text-[var(--galactic-aurora)]'
+    : 'bg-[var(--galactic-rose)]/10 text-[var(--galactic-rose)]';
 
   // Performance history — prefer API data (from fetchMemberDetail) over store fallback
   const perfHistory = member?.performanceHistory?.length
@@ -234,52 +238,54 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
       {/* Back + Actions */}
       <div className="flex items-center justify-between flex-wrap gap-2">
         <Link href="/members">
-          <Button variant="ghost" className="text-slate-500 hover:text-slate-700 -ml-2">
+          <Button variant="ghost" className="text-[var(--galactic-diamond)]/80 hover:text-[var(--galactic-diamond)] -ml-2">
             <ArrowLeft className="mr-2 h-4 w-4" /> Kembali ke Daftar
           </Button>
         </Link>
         <div className="flex gap-2">
-          {!isEditing ? (
+          {isAdmin && !isEditing ? (
             <Button
               onClick={() => setIsEditing(true)}
               variant="outline"
-              className="border-blue-200 text-blue-600 hover:bg-blue-50"
+              className="border-[var(--galactic-aurora)]/20 text-[var(--galactic-aurora)] hover:bg-[var(--galactic-aurora)]/10"
             >
               <Pencil className="mr-2 h-4 w-4" /> Edit Profil
             </Button>
-          ) : (
+          ) : isEditing ? (
             <Button
               onClick={() => setIsEditing(false)}
               variant="outline"
-              className="border-slate-200 text-slate-600"
+              className="border-white/10 text-[var(--galactic-diamond)]/80"
             >
               <X className="mr-2 h-4 w-4" /> Batal Edit
             </Button>
+          ) : null}
+          {isAdmin && (
+            <Button
+              onClick={handleDeleteMember}
+              variant="outline"
+              className="border-[var(--galactic-rose)]/20 text-[var(--galactic-rose)] hover:bg-[var(--galactic-rose)]/10"
+            >
+              <Trash2 className="mr-2 h-4 w-4" /> Hapus
+            </Button>
           )}
-          <Button
-            onClick={handleDeleteMember}
-            variant="outline"
-            className="border-red-200 text-red-600 hover:bg-red-50"
-          >
-            <Trash2 className="mr-2 h-4 w-4" /> Hapus
-          </Button>
         </div>
       </div>
 
       {/* Error */}
       {saveError && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+        <div className="p-3 bg-[var(--galactic-rose)]/10 border border-[var(--galactic-rose)]/20 rounded-lg text-[var(--galactic-rose)] text-sm">
           {saveError}
         </div>
       )}
 
       {/* Profile Card */}
-      <Card className="shadow-md border border-slate-200 overflow-hidden">
+      <GlassCard className="shadow-md border border-white/10 overflow-hidden">
         <div className={`h-24 bg-gradient-to-r ${genderColor} relative`}>
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItSDJ2LTJoMzR6bTAtMzBWMEgydjRoMzR6TTIgMjBoMzR2MkgyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
         </div>
 
-        <CardContent className="p-6 -mt-12">
+        <GlassCardContent className="p-6 -mt-12">
           <div className="flex flex-col sm:flex-row items-start gap-6">
             {/* Avatar / Photo */}
             <div className="relative group">
@@ -292,19 +298,23 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                   {effectiveMember.avatarInitial}
                 </div>
               )}
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="absolute inset-0 w-24 h-24 rounded-2xl bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
-              >
-                <Camera className="h-6 w-6 text-white" />
-              </button>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handlePhotoUpload}
-              />
+              {isAdmin && (
+                <>
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="absolute inset-0 w-24 h-24 rounded-2xl bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                  >
+                    <Camera className="h-6 w-6 text-white" />
+                  </button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handlePhotoUpload}
+                  />
+                </>
+              )}
             </div>
 
             {/* Info */}
@@ -313,14 +323,14 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-sm font-medium text-slate-700">Nama Lengkap</label>
+                      <label className="text-sm font-medium text-[var(--galactic-diamond)]">Nama Lengkap</label>
                       <Input
                         value={editData.name}
                         onChange={(e) => setEditData({ ...editData, name: e.target.value })}
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-sm font-medium text-slate-700">Email</label>
+                      <label className="text-sm font-medium text-[var(--galactic-diamond)]">Email</label>
                       <Input
                         type="email"
                         value={editData.email}
@@ -328,28 +338,28 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-sm font-medium text-slate-700">Posisi / Jabatan</label>
+                      <label className="text-sm font-medium text-[var(--galactic-diamond)]">Posisi / Jabatan</label>
                       <Input
                         value={editData.position}
                         onChange={(e) => setEditData({ ...editData, position: e.target.value })}
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-sm font-medium text-slate-700">Divisi</label>
+                      <label className="text-sm font-medium text-[var(--galactic-diamond)]">Divisi</label>
                       <Input
                         value={editData.department}
                         onChange={(e) => setEditData({ ...editData, department: e.target.value })}
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-sm font-medium text-slate-700">No. Telepon</label>
+                      <label className="text-sm font-medium text-[var(--galactic-diamond)]">No. Telepon</label>
                       <Input
                         value={editData.phone}
                         onChange={(e) => setEditData({ ...editData, phone: e.target.value })}
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-sm font-medium text-slate-700">Tanggal Bergabung</label>
+                      <label className="text-sm font-medium text-[var(--galactic-diamond)]">Tanggal Bergabung</label>
                       <Input
                         type="date"
                         value={editData.joinDate}
@@ -357,15 +367,15 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-sm font-medium text-slate-700">Jenis Kelamin</label>
+                      <label className="text-sm font-medium text-[var(--galactic-diamond)]">Jenis Kelamin</label>
                       <div className="flex gap-2">
                         <button
                           type="button"
                           onClick={() => setEditData({ ...editData, gender: 'Laki-laki' })}
                           className={`flex-1 px-4 py-2 rounded-lg border text-sm font-medium transition-all ${
                             editData.gender === 'Laki-laki'
-                              ? 'bg-blue-600 text-white border-blue-600'
-                              : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300'
+                              ? 'bg-[var(--galactic-aurora)] text-white border-blue-600'
+                              : 'bg-white/5 text-[var(--galactic-diamond)]/80 border-white/10 hover:border-[var(--galactic-aurora)]/30'
                           }`}
                         >
                           👨 Laki-laki
@@ -375,8 +385,8 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                           onClick={() => setEditData({ ...editData, gender: 'Perempuan' })}
                           className={`flex-1 px-4 py-2 rounded-lg border text-sm font-medium transition-all ${
                             editData.gender === 'Perempuan'
-                              ? 'bg-pink-600 text-white border-pink-600'
-                              : 'bg-white text-slate-600 border-slate-200 hover:border-pink-300'
+                              ? 'bg-[var(--galactic-rose)] text-white border-pink-600'
+                              : 'bg-white/5 text-[var(--galactic-diamond)]/80 border-white/10 hover:border-[var(--galactic-rose)]/30'
                           }`}
                         >
                           👩 Perempuan
@@ -392,7 +402,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                     <Button
                       onClick={handleSaveProfile}
                       disabled={isSaving}
-                      className="bg-blue-600 hover:bg-blue-700"
+                      className="bg-[var(--galactic-aurora)] hover:bg-[var(--galactic-cosmic)]"
                     >
                       {isSaving ? (
                         <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Menyimpan...</>
@@ -406,12 +416,12 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                 <>
                   <div>
                     <div className="flex items-center gap-3">
-                      <h2 className="text-2xl font-bold text-slate-800">{effectiveMember.name}</h2>
+                      <h2 className="text-2xl font-bold text-[var(--galactic-diamond)]">{effectiveMember.name}</h2>
                       <Badge variant="outline" className={`text-xs font-medium ${genderBadgeColor}`}>
                         {effectiveMember.gender === 'Laki-laki' ? '👨' : '👩'} {effectiveMember.gender}
                       </Badge>
                     </div>
-                    <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-slate-500">
+                    <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-[var(--galactic-diamond)]/80">
                       <span className="flex items-center gap-1.5">
                         <Briefcase className="h-4 w-4" />{effectiveMember.position} · {effectiveMember.department}
                       </span>
@@ -433,26 +443,26 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-sm text-slate-500">Rata-rata Skor:</span>
-                    <span className="text-2xl font-bold text-slate-800">{effectiveMember.avgScore}</span>
+                    <span className="text-sm text-[var(--galactic-diamond)]/80">Rata-rata Skor:</span>
+                    <span className="text-2xl font-bold text-[var(--galactic-diamond)]">{effectiveMember.avgScore}</span>
                     {effectiveMember.avgScore > 0 && <RatingBadge score={effectiveMember.avgScore} showScore={false} />}
                   </div>
                 </>
               )}
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </GlassCardContent>
+      </GlassCard>
 
       <MemberLineChart data={perfHistory} />
 
       {/* Performance Table — Editable */}
-      <Card className="shadow-sm border border-slate-200">
-        <CardHeader className="pb-2">
+      <GlassCard className="shadow-[0_0_15px_rgba(255,255,255,0.05)] border border-white/10">
+        <GlassCardHeader className="pb-2">
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <CardTitle className="text-base font-semibold text-slate-700">Detail Kinerja Mingguan</CardTitle>
+            <GlassCardTitle className="text-base font-semibold text-[var(--galactic-diamond)]">Detail Kinerja Mingguan</GlassCardTitle>
             <div className="flex gap-2">
-              {!isEditingPerformance ? (
+              {isAdmin && !isEditingPerformance ? (
                 <Button
                   size="sm"
                   variant="outline"
@@ -460,17 +470,17 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                     setEditPerformance([...perfHistory]);
                     setIsEditingPerformance(true);
                   }}
-                  className="border-blue-200 text-blue-600 hover:bg-blue-50"
+                  className="border-[var(--galactic-aurora)]/20 text-[var(--galactic-aurora)] hover:bg-[var(--galactic-aurora)]/10"
                 >
                   <Pencil className="mr-1.5 h-3.5 w-3.5" /> Edit Kinerja
                 </Button>
-              ) : (
+              ) : isEditingPerformance ? (
                 <>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={handleAddPerformanceWeek}
-                    className="border-emerald-200 text-emerald-600 hover:bg-emerald-50"
+                    className="border-[var(--galactic-emerald)]/20 text-[var(--galactic-emerald)] hover:bg-[var(--galactic-emerald)]/10"
                   >
                     <Plus className="mr-1.5 h-3.5 w-3.5" /> Tambah Minggu
                   </Button>
@@ -481,7 +491,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                       setEditPerformance([...perfHistory]);
                       setIsEditingPerformance(false);
                     }}
-                    className="border-slate-200 text-slate-600"
+className="border-white/10 text-[var(--galactic-diamond)]/80"
                   >
                     <X className="mr-1.5 h-3.5 w-3.5" /> Batal
                   </Button>
@@ -489,7 +499,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                     size="sm"
                     onClick={handleSavePerformance}
                     disabled={isSaving}
-                    className="bg-blue-600 hover:bg-blue-700"
+                    className="bg-[var(--galactic-aurora)] hover:bg-[var(--galactic-cosmic)]"
                   >
                     {isSaving ? (
                       <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
@@ -499,31 +509,31 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                     Simpan
                   </Button>
                 </>
-              )}
+              ) : null}
             </div>
           </div>
-        </CardHeader>
-        <CardContent>
+        </GlassCardHeader>
+        <GlassCardContent>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-200">
-                  <th className="text-left py-3 px-4 font-semibold text-slate-600">Minggu</th>
-                  <th className="text-left py-3 px-4 font-semibold text-slate-600">IKR (60%)</th>
-                  <th className="text-left py-3 px-4 font-semibold text-slate-600">Kompetensi (40%)</th>
-                  <th className="text-left py-3 px-4 font-semibold text-slate-600">Skor Akhir</th>
-                  <th className="text-left py-3 px-4 font-semibold text-slate-600">Rating</th>
+                <tr className="border-b border-white/10">
+                  <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80">Minggu</th>
+                  <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80">IKR (60%)</th>
+                  <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80">Kompetensi (40%)</th>
+                  <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80">Skor Akhir</th>
+                  <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80">Rating</th>
                   {isEditingPerformance && (
-                    <th className="text-center py-3 px-4 font-semibold text-slate-600 w-16">Aksi</th>
+                    <th className="text-center py-3 px-4 font-semibold text-[var(--galactic-diamond)]/80 w-16">Aksi</th>
                   )}
                 </tr>
               </thead>
               <tbody>
                 {isEditingPerformance ? (
                   editPerformance.map((h, idx) => (
-                    <tr key={h.id ?? `edit-${idx}`} className="border-b border-slate-100 hover:bg-blue-50/30 transition-colors">
+                    <tr key={h.id ?? `edit-${idx}`} className="border-b border-white/5 hover:bg-[var(--galactic-aurora)]/10/30 transition-colors">
                       <td className="py-2 px-4">
-                        <span className="text-sm font-medium text-slate-700">W{h.week}</span>
+                        <span className="text-sm font-medium text-[var(--galactic-diamond)]">W{h.week}</span>
                       </td>
                       <td className="py-2 px-4">
                         <Input
@@ -545,7 +555,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                           className="w-20 h-8 text-sm"
                         />
                       </td>
-                      <td className="py-2 px-4 font-semibold text-slate-800">
+                      <td className="py-2 px-4 font-semibold text-[var(--galactic-diamond)]">
                         {((h.ikr * 0.6) + (h.competency * 0.4)).toFixed(1)}
                       </td>
                       <td className="py-2 px-4">
@@ -554,7 +564,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                       <td className="py-2 px-4 text-center">
                         <button
                           onClick={() => handleDeletePerformanceWeek(idx)}
-                          className="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                          className="p-1 text-red-400 hover:text-[var(--galactic-rose)] hover:bg-[var(--galactic-rose)]/10 rounded transition-colors"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -563,11 +573,11 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
                   ))
                 ) : (
                   perfHistory.map((h, idx) => (
-                    <tr key={h.id ?? `perf-${idx}`} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                      <td className="py-3 px-4 font-medium text-slate-700">W{h.week}</td>
-                      <td className="py-3 px-4 text-slate-600">{h.ikr}</td>
-                      <td className="py-3 px-4 text-slate-600">{h.competency}</td>
-                      <td className="py-3 px-4 font-semibold text-slate-800">{h.final}</td>
+                    <tr key={h.id ?? `perf-${idx}`} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                      <td className="py-3 px-4 font-medium text-[var(--galactic-diamond)]">W{h.week}</td>
+                      <td className="py-3 px-4 text-[var(--galactic-diamond)]/80">{h.ikr}</td>
+                      <td className="py-3 px-4 text-[var(--galactic-diamond)]/80">{h.competency}</td>
+                      <td className="py-3 px-4 font-semibold text-[var(--galactic-diamond)]">{h.final}</td>
                       <td className="py-3 px-4"><RatingBadge score={h.final} /></td>
                     </tr>
                   ))
@@ -577,23 +587,25 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
 
             {perfHistory.length === 0 && !isEditingPerformance && (
               <div className="text-center py-8">
-                <p className="text-slate-400">Belum ada data kinerja</p>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="mt-2 border-blue-200 text-blue-600"
-                  onClick={() => {
-                    setEditPerformance([]);
-                    setIsEditingPerformance(true);
-                  }}
-                >
-                  <Plus className="mr-1.5 h-3.5 w-3.5" /> Tambah Data Kinerja
-                </Button>
+                <p className="text-[var(--galactic-diamond)]/60">Belum ada data kinerja</p>
+                {isAdmin && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="mt-2 border-[var(--galactic-aurora)]/20 text-[var(--galactic-aurora)]"
+                    onClick={() => {
+                      setEditPerformance([]);
+                      setIsEditingPerformance(true);
+                    }}
+                  >
+                    <Plus className="mr-1.5 h-3.5 w-3.5" /> Tambah Data Kinerja
+                  </Button>
+                )}
               </div>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </GlassCardContent>
+      </GlassCard>
     </div>
   );
 }

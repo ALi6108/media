@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useForm, useFieldArray, useWatch, type Control } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { GlassCard, GlassCardContent, GlassCardHeader, GlassCardTitle } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuthStore } from '@/store/authStore';
@@ -35,11 +35,11 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const PLATFORM_META: Record<PlatformKey, { icon: React.ElementType; color: string; bg: string; label: string }> = {
-  IG_IPNU: { icon: Camera, color: 'text-pink-500', bg: 'bg-pink-50', label: 'IG IPNU' },
-  IG_IPPNU: { icon: Camera, color: 'text-fuchsia-600', bg: 'bg-fuchsia-50', label: 'IG IPPNU' },
-  YOUTUBE: { icon: Play, color: 'text-red-500', bg: 'bg-red-50', label: 'YouTube' },
-  TIKTOK: { icon: FileText, color: 'text-slate-800', bg: 'bg-slate-50', label: 'TikTok' },
-  BLOG: { icon: Globe, color: 'text-blue-600', bg: 'bg-blue-50', label: 'Blog' },
+  IG_IPNU: { icon: Camera, color: 'text-[var(--galactic-rose)]', bg: 'bg-[var(--galactic-rose)]/10', label: 'IG IPNU' },
+  IG_IPPNU: { icon: Camera, color: 'text-[var(--galactic-rose-soft)]', bg: 'bg-[var(--galactic-rose)]/10', label: 'IG IPPNU' },
+  YOUTUBE: { icon: Play, color: 'text-red-500', bg: 'bg-[var(--galactic-rose)]/10', label: 'YouTube' },
+  TIKTOK: { icon: FileText, color: 'text-[var(--galactic-diamond)]', bg: 'bg-white/[0.02]', label: 'TikTok' },
+  BLOG: { icon: Globe, color: 'text-[var(--galactic-aurora)]', bg: 'bg-[var(--galactic-aurora)]/10', label: 'Blog' },
 };
 
 const CALC: Record<PlatformKey, { baseER: number; reachPerFollower: number; impMult: number }> = {
@@ -68,14 +68,14 @@ function CalcCell({ control, index }: { control: Control<FormValues>; index: num
   const calc = autoCalc(platform as PlatformKey, followers || 0, posts || 0);
 
   if (!followers && !posts) {
-    return <span className="text-xs text-slate-300">—</span>;
+    return <span className="text-xs text-[var(--galactic-diamond)]/60">—</span>;
   }
 
   return (
     <div className="flex flex-col gap-0.5 text-xs">
-      <span className="text-slate-500">Reach: <strong className="text-slate-700">{calc.reach.toLocaleString()}</strong></span>
-      <span className="text-slate-500">Impressions: <strong className="text-slate-700">{calc.impressions.toLocaleString()}</strong></span>
-      <span className="text-slate-500">ER: <strong className="text-slate-700">{calc.er}%</strong></span>
+      <span className="text-[var(--galactic-diamond)]/60">Reach: <strong className="text-[var(--galactic-diamond)]">{calc.reach.toLocaleString()}</strong></span>
+      <span className="text-[var(--galactic-diamond)]/60">Impressions: <strong className="text-[var(--galactic-diamond)]">{calc.impressions.toLocaleString()}</strong></span>
+      <span className="text-[var(--galactic-diamond)]/60">ER: <strong className="text-[var(--galactic-diamond)]">{calc.er}%</strong></span>
     </div>
   );
 }
@@ -286,8 +286,8 @@ export default function SocialMediaPage() {
   if (!mounted) {
     return (
       <div className="animate-pulse space-y-4">
-        <div className="h-20 bg-slate-200 rounded-xl" />
-        <div className="h-96 bg-slate-200 rounded-xl" />
+        <div className="h-20 bg-white/10 rounded-xl" />
+        <div className="h-96 bg-white/10 rounded-xl" />
       </div>
     );
   }
@@ -301,8 +301,8 @@ export default function SocialMediaPage() {
       <>
         <div className="space-y-6">
           <div>
-            <h2 className="text-2xl font-bold text-slate-800">Media Sosial</h2>
-            <p className="text-slate-500 text-sm mt-1">Pantau pertumbuhan dan engagement di semua platform</p>
+            <h2 className="text-2xl font-heading font-bold text-[var(--galactic-diamond)]">Media Sosial</h2>
+            <p className="text-[var(--galactic-diamond)]/60 text-sm mt-1">Pantau pertumbuhan dan engagement di semua platform</p>
           </div>
           <SocialMediaFollowersChart data={followersTrend} />
           <SocialMediaEngagementChart data={engagementTrend} />
@@ -315,37 +315,37 @@ export default function SocialMediaPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800">Input Kinerja Media Sosial</h2>
-          <p className="text-slate-500 text-sm mt-1">
+          <h2 className="text-2xl font-heading font-bold text-[var(--galactic-diamond)]">Input Kinerja Media Sosial</h2>
+          <p className="text-[var(--galactic-diamond)]/60 text-sm mt-1">
             Masukkan jumlah followers dan postingan setiap platform per minggu
           </p>
         </div>
         <div className="flex items-center gap-2 text-sm">
-          <BarChart3 className="h-4 w-4 text-blue-500" />
-          <span className="text-slate-500">Reach, Impressions & ER dihitung otomatis</span>
+          <BarChart3 className="h-4 w-4 text-[var(--galactic-aurora-soft)]" />
+          <span className="text-[var(--galactic-diamond)]/60">Reach, Impressions & ER dihitung otomatis</span>
         </div>
       </div>
 
       {/* Period Selector */}
-      <div className="flex flex-wrap items-center gap-3 bg-white rounded-xl border border-slate-200 p-3 shadow-sm">
+      <div className="flex flex-wrap items-center gap-3 bg-white/5 rounded-xl border border-white/10 p-3 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
         <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-slate-600">Tahun:</label>
+          <label className="text-sm font-medium text-[var(--galactic-diamond)]/60">Tahun:</label>
           <select
             value={selectedYear}
             onChange={(e) => setYear(Number(e.target.value))}
-            className="border border-slate-300 rounded-lg px-3 py-1.5 text-sm bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-white/10 rounded-lg px-3 py-1.5 text-sm bg-white/5 text-[var(--galactic-diamond)] focus:outline-none focus:ring-2 focus:ring-[var(--galactic-aurora)]"
           >
             {[2024, 2025, 2026, 2027].map((y) => (
               <option key={y} value={y}>{y}</option>
             ))}
           </select>
         </div>
-        <div className="h-5 w-px bg-slate-200" />
+        <div className="h-5 w-px bg-white/10" />
         <div className="flex items-center gap-2">
           <Button type="button" variant="outline" size="sm" onClick={() => setWeek(selectedWeek - 1)} className="h-8 w-8 p-0">
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <span className="text-sm font-semibold text-slate-700 min-w-[100px] text-center">
+          <span className="text-sm font-semibold text-[var(--galactic-diamond)] min-w-[100px] text-center">
             Minggu {selectedWeek}
           </span>
           <Button type="button" variant="outline" size="sm" onClick={() => setWeek(selectedWeek + 1)} className="h-8 w-8 p-0">
@@ -356,36 +356,36 @@ export default function SocialMediaPage() {
 
       {isLoading ? (
         <div className="animate-pulse space-y-4">
-          <div className="h-10 bg-slate-200 rounded-lg w-1/3" />
-          <div className="h-96 bg-slate-200 rounded-xl" />
+          <div className="h-10 bg-white/10 rounded-lg w-1/3" />
+          <div className="h-96 bg-white/10 rounded-xl" />
         </div>
       ) : (
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <Card className="shadow-sm border border-slate-200">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base font-semibold text-slate-700 flex items-center">
+          <GlassCard className="shadow-[0_0_15px_rgba(255,255,255,0.05)] border border-white/10">
+            <GlassCardHeader className="pb-2">
+              <GlassCardTitle className="text-base font-semibold text-[var(--galactic-diamond)] flex items-center">
                 <span>Kinerja Media Sosial — {fields.length} Platform</span>
                 <Button type="button" variant="ghost" size="icon" className="ml-2 h-6 w-6" onClick={fetchData} disabled={isLoading} aria-label="Refresh">
                   <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
                 </Button>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+              </GlassCardTitle>
+            </GlassCardHeader>
+            <GlassCardContent>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-slate-200">
-                      <th className="text-left py-3 px-4 font-semibold text-slate-600 w-8">#</th>
-                      <th className="text-left py-3 px-4 font-semibold text-slate-600">Platform</th>
-                      <th className="text-left py-3 px-4 font-semibold text-slate-600 w-36">Followers</th>
-                      <th className="text-left py-3 px-4 font-semibold text-slate-600 w-36">Total Posts</th>
-                      <th className="text-left py-3 px-4 font-semibold text-slate-600">Estimasi (otomatis)</th>
+                    <tr className="border-b border-white/10">
+                      <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/60 w-8">#</th>
+                      <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/60">Platform</th>
+                      <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/60 w-36">Followers</th>
+                      <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/60 w-36">Total Posts</th>
+                      <th className="text-left py-3 px-4 font-semibold text-[var(--galactic-diamond)]/60">Estimasi (otomatis)</th>
                     </tr>
                   </thead>
                   <tbody>
                     {fields.map((field, index) => (
-                      <tr key={field.id} className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
-                        <td className="py-3 px-4 text-slate-400 font-mono">{index + 1}</td>
+                      <tr key={field.id} className="border-b border-white/5 hover:bg-white/[0.02]/50 transition-colors">
+                        <td className="py-3 px-4 text-[var(--galactic-diamond)]/60 font-mono">{index + 1}</td>
                         <td className="py-3 px-4">
                           <div className="flex items-center gap-2">
                             {(() => {
@@ -394,10 +394,10 @@ export default function SocialMediaPage() {
                               const Icon = meta?.icon || FileText;
                               return (
                                 <>
-                                  <div className={`p-1.5 rounded-lg ${meta?.bg || 'bg-slate-50'}`}>
-                                    <Icon className={`h-4 w-4 ${meta?.color || 'text-slate-500'}`} />
+                                  <div className={`p-1.5 rounded-lg ${meta?.bg || 'bg-white/[0.02]'}`}>
+                                    <Icon className={`h-4 w-4 ${meta?.color || 'text-[var(--galactic-diamond)]/60'}`} />
                                   </div>
-                                  <span className="font-medium text-slate-700">{form.getValues(`entries.${index}.label`)}</span>
+                                  <span className="font-medium text-[var(--galactic-diamond)]">{form.getValues(`entries.${index}.label`)}</span>
                                 </>
                               );
                             })()}
@@ -428,8 +428,8 @@ export default function SocialMediaPage() {
                 </table>
               </div>
 
-              <div className="flex justify-end mt-6 pt-4 border-t border-slate-200">
-                <Button type="submit" disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 px-8">
+              <div className="flex justify-end mt-6 pt-4 border-t border-white/10">
+                <Button type="submit" disabled={isSubmitting} className="bg-[var(--galactic-aurora)] hover:bg-[var(--galactic-cosmic)] px-8">
                   {isSubmitting ? (
                     <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Menyimpan...</>
                   ) : (
@@ -437,8 +437,8 @@ export default function SocialMediaPage() {
                   )}
                 </Button>
               </div>
-            </CardContent>
-          </Card>
+            </GlassCardContent>
+          </GlassCard>
         </form>
       )}
 

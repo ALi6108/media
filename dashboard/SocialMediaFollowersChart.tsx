@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { GlassCard, GlassCardHeader, GlassCardTitle, GlassCardContent } from '@/components/ui/glass-card';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from 'recharts';
@@ -16,11 +16,11 @@ const PLATFORM_META: Record<PlatformKey, { label: string }> = {
 };
 
 const CHART_COLORS: Record<PlatformKey, string> = {
-  IG_IPNU: '#ec4899',
-  IG_IPPNU: '#d946ef',
-  YOUTUBE: '#ef4444',
-  TIKTOK: '#1e293b',
-  BLOG: '#2563eb',
+  IG_IPNU: '#60a5fa', // blue
+  IG_IPPNU: '#f472b6', // pink
+  YOUTUBE: '#ffffff', // white
+  TIKTOK: '#3b82f6', // blue darker
+  BLOG: '#ec4899', // pink darker
 };
 
 interface DataEntry {
@@ -37,20 +37,39 @@ export function SocialMediaFollowersChart({ data, title = 'Tren Pertumbuhan Foll
   const hasData = data.length > 0 && PLATFORM_KEYS.some((k) => data.some((d) => (d[k] as number || 0) > 0));
 
   return (
-    <Card className="shadow-sm border border-slate-200">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base font-semibold text-slate-700">{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <GlassCard>
+      <GlassCardHeader className="pb-2">
+        <GlassCardTitle className="text-base">{title}</GlassCardTitle>
+      </GlassCardHeader>
+      <GlassCardContent>
         <div className="h-72">
           {hasData ? (
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="week" tick={{ fontSize: 12, fill: '#64748b' }} />
-                <YAxis tick={{ fontSize: 12, fill: '#64748b' }} />
-                <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px' }} />
-                <Legend wrapperStyle={{ fontSize: '12px' }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                <XAxis 
+                  dataKey="week" 
+                  tick={{ fontSize: 11, fill: 'rgba(232,224,240,0.6)' }} 
+                  axisLine={{ stroke: 'rgba(255,255,255,0.1)' }} 
+                  tickLine={{ stroke: 'rgba(255,255,255,0.1)' }} 
+                />
+                <YAxis 
+                  tick={{ fontSize: 11, fill: 'rgba(232,224,240,0.6)' }} 
+                  axisLine={{ stroke: 'rgba(255,255,255,0.1)' }} 
+                  tickLine={{ stroke: 'rgba(255,255,255,0.1)' }} 
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'rgba(18,8,37,0.8)', 
+                    backdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(255,255,255,0.1)', 
+                    borderRadius: '1rem', 
+                    color: '#e8e0f0', 
+                    fontSize: '12px' 
+                  }}
+                  itemStyle={{ color: '#e8e0f0' }} 
+                />
+                <Legend wrapperStyle={{ fontSize: '12px', color: 'rgba(232,224,240,0.8)' }} />
                 {PLATFORM_KEYS.filter((k) => data.some((d) => (d[k] as number || 0) > 0)).map((key) => (
                   <Line
                     key={key}
@@ -58,19 +77,20 @@ export function SocialMediaFollowersChart({ data, title = 'Tren Pertumbuhan Foll
                     dataKey={key}
                     name={PLATFORM_META[key].label}
                     stroke={CHART_COLORS[key]}
-                    strokeWidth={2}
-                    dot={{ r: 4 }}
+                    strokeWidth={3}
+                    dot={{ r: 4, strokeWidth: 2, fill: '#120825', stroke: CHART_COLORS[key] }}
+                    activeDot={{ r: 6, strokeWidth: 2, stroke: '#fff', fill: CHART_COLORS[key] }}
                   />
                 ))}
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-full flex items-center justify-center text-slate-400">
+            <div className="h-full flex items-center justify-center text-[var(--galactic-diamond)]/60">
               Belum ada data followers
             </div>
           )}
         </div>
-      </CardContent>
-    </Card>
+      </GlassCardContent>
+    </GlassCard>
   );
 }
