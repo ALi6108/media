@@ -12,6 +12,7 @@ import { RatingBadge } from '@/components/shared/RatingBadge';
 import { useMemberStore, Gender, Member } from '@/store/memberStore';
 import { useAuthStore } from '@/store/authStore';
 import { performanceApi } from '@/services/performance.api';
+import { membersApi } from '@/services/members.api';
 import {
   ArrowLeft, Mail, Calendar, Briefcase, Save, X, Pencil,
   Camera, Loader2, Phone, Trash2, Plus, Check,
@@ -110,16 +111,21 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
     );
   }
 
-  function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (file && member && isAdmin) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const photoUrl = reader.result as string;
-        updateMember(member.id, { photoUrl }).catch(console.error);
-        setMember(prev => prev ? { ...prev, photoUrl } : prev);
-      };
-      reader.readAsDataURL(file);
+      try {
+        const res = await membersApi.uploadPhoto(member.id, file);
+        const updated = res.data?.data || res.data;
+        const newPhotoUrl = updated.photo_url || updated.photoUrl || null;
+        if (newPhotoUrl && typeof window !== 'undefined') {
+          localStorage.setItem(`member_photo_${member.id}`, newPhotoUrl);
+        }
+        setMember(prev => prev ? { ...prev, photoUrl: newPhotoUrl } : prev);
+      } catch (err) {
+        console.error('Failed to upload photo:', err);
+        setSaveError('Gagal mengupload foto. Silakan coba lagi.');
+      }
     }
   }
 

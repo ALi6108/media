@@ -49,17 +49,9 @@ function getInitials(name: string): string {
     .slice(0, 2);
 }
 
-function mapGenderFromApi(gender: string | null | undefined, name?: string): Gender {
+function mapGenderFromApi(gender: string | null | undefined): Gender {
   if (gender === 'L') return 'Laki-laki';
   if (gender === 'P') return 'Perempuan';
-  // Deterministic mock gender based on name if no gender from API is set, to ensure a realistic mix of genders
-  if (name) {
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return Math.abs(hash) % 2 === 0 ? 'Perempuan' : 'Laki-laki';
-  }
   return 'Laki-laki';
 }
 
@@ -92,7 +84,7 @@ function mapMemberFromApi(raw: any): Member {
     ? Number((perfHistory.reduce((s, h) => s + h.final, 0) / perfHistory.length).toFixed(1))
     : 0;
 
-  // Retrieve mock gender & photo dari localStorage (backend tidak simpan field ini)
+  // Retrieve cached gender & photo dari localStorage sebagai fallback
   let savedGender: Gender | null = null;
   let savedPhoto: string | null = null;
   if (typeof window !== 'undefined') {
@@ -109,7 +101,7 @@ function mapMemberFromApi(raw: any): Member {
     email: raw.email || '',
     position: raw.position || '',
     department: raw.division || '',
-    gender: savedGender || mapGenderFromApi(raw.gender, name),
+    gender: savedGender || mapGenderFromApi(raw.gender),
     phone: raw.phone || '',
     joinDate: raw.join_date ? raw.join_date.split('T')[0] : '',
     photoUrl: savedPhoto || raw.photo_url || null,

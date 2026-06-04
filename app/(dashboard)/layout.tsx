@@ -1,13 +1,17 @@
 'use client';
 
+import { useState } from 'react';
 import { Sidebar } from '@/components/layout/sidebar';
 import { Topbar } from '@/components/layout/topbar';
+import { MobileNav } from '@/components/layout/mobileNav';
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <div className="flex h-screen overflow-hidden text-[var(--galactic-diamond)] relative">
       
@@ -23,12 +27,17 @@ export default function DashboardLayout({
         }}
       />
 
+      {/* Mobile Nav Drawer */}
+      <MobileNav open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
       {/* Main Layout Layer */}
       <div className="relative z-10 flex w-full h-full">
-        <Sidebar />
+        <div className="hidden lg:flex">
+          <Sidebar />
+        </div>
         <div className="flex-1 flex flex-col overflow-hidden relative z-10">
-          <Topbar />
-          <main className="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 relative z-0 scrollbar-none">
+          <Topbar onMenuClick={() => setSidebarOpen(true)} />
+          <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-10 pb-20 md:pb-6 lg:pb-10 relative z-0 scrollbar-none">
             <div className="max-w-7xl mx-auto w-full">
               {children}
             </div>

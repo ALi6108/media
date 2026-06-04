@@ -40,4 +40,12 @@ export const membersApi = {
 
   toggleActive: (id: string) =>
     api.patch(`/api/v1/members/${id}/toggle-active`),
+
+  uploadPhoto: (id: string, file: File) => {
+    const formData = new FormData();
+    formData.append('photo', file);
+    return api.post(`/api/v1/members/${id}/photo`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
 };

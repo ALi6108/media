@@ -86,11 +86,11 @@ export default function LoginPage() {
         <div className="flex flex-col items-center mb-10 animate-slide-up">
           <div className="relative mb-6 group">
             <div className="absolute inset-0 bg-[var(--galactic-aurora)] rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
-            <div className="relative bg-gradient-to-br from-[var(--galactic-aurora)] to-[var(--galactic-aurora)]/70 p-5 rounded-2xl shadow-[0_0_30px_var(--glass-shadow)] ring-1 ring-white/20 ring-offset-4 ring-offset-[var(--galactic-deep)] transition-all duration-500 group-hover:-translate-y-1">
-              <Activity className="h-10 w-10 text-white" />
+            <div className="relative bg-gradient-to-br from-[var(--galactic-aurora)] to-[var(--galactic-aurora)]/70 p-4 md:p-5 rounded-2xl shadow-[0_0_30px_var(--glass-shadow)] ring-1 ring-white/20 ring-offset-4 ring-offset-[var(--galactic-deep)] transition-all duration-500 group-hover:-translate-y-1">
+              <Activity className="h-8 w-8 md:h-10 md:w-10 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-heading font-bold tracking-tight text-[var(--galactic-diamond)]">HALO REKAN REKANITA !!</h1>
+          <h1 className="text-2xl md:text-3xl font-heading font-bold tracking-tight text-[var(--galactic-diamond)] text-center">HALO REKAN REKANITA !!</h1>
           <p className="text-[var(--galactic-diamond)]/80 mt-3 text-sm font-medium tracking-wide uppercase">Web Report Kinerja Tim Media</p>
         </div>
 
