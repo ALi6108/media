@@ -63,6 +63,10 @@ function mapGenderFromApi(gender: string | null | undefined, name?: string): Gen
   return 'Laki-laki';
 }
 
+function mapGenderToApi(gender: Gender): string {
+  return gender === 'Laki-laki' ? 'L' : 'P';
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mapMemberFromApi(raw: any): Member {
   const name = raw.full_name || raw.name || '';
@@ -274,8 +278,7 @@ export const useMemberStore = create<MemberState>()(
           email: data.email || undefined,
           phone: data.phone || undefined,
           join_date: data.joinDate || undefined,
-          photo_url: data.photoUrl || undefined,
-          gender: data.gender || undefined,
+          gender: data.gender ? mapGenderToApi(data.gender) : undefined,
         };
         const res = await membersApi.create(payload);
         const raw = res.data?.data || res.data;
@@ -308,8 +311,7 @@ export const useMemberStore = create<MemberState>()(
         if (data.department !== undefined) payload.division = data.department;
         if (data.phone !== undefined) payload.phone = data.phone;
         if (data.joinDate !== undefined) payload.join_date = data.joinDate;
-        if (data.gender !== undefined) payload.gender = data.gender;
-        if (data.photoUrl !== undefined) payload.photo_url = data.photoUrl || undefined;
+        if (data.gender !== undefined) payload.gender = mapGenderToApi(data.gender);
 
         await membersApi.update(id, payload);
 
