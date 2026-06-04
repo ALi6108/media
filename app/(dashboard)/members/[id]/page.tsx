@@ -129,12 +129,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
     setSaveError('');
     try {
       await updateMember(member.id, editData);
-      setMember(prev => prev ? {
-        ...prev,
-        ...editData,
-        avatarInitial: editData.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2),
-      } : prev);
-
+      await loadMember();
       setIsEditing(false);
     } catch {
       setSaveError('Gagal menyimpan perubahan. Silakan coba lagi.');

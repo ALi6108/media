@@ -274,11 +274,13 @@ export const useMemberStore = create<MemberState>()(
           email: data.email || undefined,
           phone: data.phone || undefined,
           join_date: data.joinDate || undefined,
+          photo_url: data.photoUrl || undefined,
+          gender: data.gender || undefined,
         };
         const res = await membersApi.create(payload);
         const raw = res.data?.data || res.data;
 
-        // Save photo & gender ke localStorage (backend tidak simpan field ini)
+        // Cache photo & gender ke localStorage sebagai fallback
         if (typeof window !== 'undefined') {
           localStorage.setItem(`member_gender_${raw.id}`, data.gender);
           if (data.photoUrl) {
@@ -306,10 +308,12 @@ export const useMemberStore = create<MemberState>()(
         if (data.department !== undefined) payload.division = data.department;
         if (data.phone !== undefined) payload.phone = data.phone;
         if (data.joinDate !== undefined) payload.join_date = data.joinDate;
+        if (data.gender !== undefined) payload.gender = data.gender;
+        if (data.photoUrl !== undefined) payload.photo_url = data.photoUrl || undefined;
 
         await membersApi.update(id, payload);
 
-        // Save photo & gender ke localStorage (backend tidak simpan field ini)
+        // Cache photo & gender ke localStorage sebagai fallback
         if (typeof window !== 'undefined') {
           if (data.gender !== undefined) {
             localStorage.setItem(`member_gender_${id}`, data.gender);

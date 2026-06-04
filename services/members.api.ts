@@ -8,6 +8,7 @@ export interface CreateMemberPayload {
   phone?: string;
   join_date?: string;
   photo_url?: string;
+  gender?: string;
 }
 
 export interface UpdateMemberPayload {
@@ -18,6 +19,7 @@ export interface UpdateMemberPayload {
   phone?: string;
   join_date?: string;
   photo_url?: string;
+  gender?: string;
 }
 
 export const membersApi = {
