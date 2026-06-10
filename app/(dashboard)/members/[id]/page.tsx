@@ -22,7 +22,7 @@ import { MemberLineChart } from '@/dashboard/MemberLineChart';
 export default function MemberDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const router = useRouter();
-  const { fetchMemberDetail, updateMember, deleteMember } = useMemberStore();
+  const { fetchMemberDetail, updateMember, deleteMember, fetchMembers } = useMemberStore();
   const memberFromStore = useMemberStore((state) => state.members.find(m => m.id === resolvedParams.id));
 
   const [member, setMember] = useState<Member | null>(() => memberFromStore ?? null);
@@ -122,6 +122,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
           localStorage.setItem(`member_photo_${member.id}`, newPhotoUrl);
         }
         setMember(prev => prev ? { ...prev, photoUrl: newPhotoUrl } : prev);
+        await fetchMembers();
       } catch (err) {
         console.error('Failed to upload photo:', err);
         setSaveError('Gagal mengupload foto. Silakan coba lagi.');

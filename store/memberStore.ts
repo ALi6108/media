@@ -104,7 +104,7 @@ function mapMemberFromApi(raw: any): Member {
     gender: savedGender || mapGenderFromApi(raw.gender),
     phone: raw.phone || '',
     joinDate: raw.join_date ? raw.join_date.split('T')[0] : '',
-    photoUrl: savedPhoto || raw.photo_url || null,
+    photoUrl: raw.photo_url || savedPhoto || null,
     avgScore,
     avatarInitial: getInitials(name),
     isActive: raw.is_active !== false,
