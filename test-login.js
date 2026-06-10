@@ -6,7 +6,7 @@ const data = JSON.stringify({
 });
 
 const options = {
-  hostname: 'lmediaback-production.up.railway.app',
+  hostname: 'lobster-app-4r52x.ondigitalocean.app',
   path: '/api/v1/auth/login',
   method: 'POST',
   headers: {

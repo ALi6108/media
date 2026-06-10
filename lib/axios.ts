@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 // We'll create the authStore soon. It will contain the token.
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://lmediaback-production.up.railway.app',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://lobster-app-4r52x.ondigitalocean.app',
   headers: {
     'Content-Type': 'application/json',
   },
