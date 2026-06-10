@@ -49,7 +49,7 @@ export function SocialMediaEngagementChart({ data, title = 'Engagement Rate (%)'
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
                 <XAxis 
                   dataKey="week" 
-                  tick={{ fontSize: 11, fill: 'rgba(232,224,240,0.6)' }} 
+                  tick={{ fontSize: 11, fill: 'rgba(232,224,240,0.6)' }}  
                   axisLine={{ stroke: 'rgba(255,255,255,0.1)' }} 
                   tickLine={{ stroke: 'rgba(255,255,255,0.1)' }} 
                 />

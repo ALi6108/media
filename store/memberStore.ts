@@ -144,7 +144,8 @@ export const useMemberStore = create<MemberState>()(
 
         // Enrich members with performance data (non-critical)
         try {
-          const perfRes = await performanceApi.getAll({ year: new Date().getFullYear() });
+          const currentYear = new Date().getFullYear();
+          const perfRes = await performanceApi.getAll({ year: currentYear, limit: 200 });
           const rawPerf: Array<{
             id?: string;
             member_id: string;
