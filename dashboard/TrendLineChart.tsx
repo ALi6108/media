@@ -17,6 +17,8 @@ interface TrendLineChartProps {
 }
 
 export function TrendLineChart({ data }: TrendLineChartProps) {
+  const hasData = data.some(d => d.avgFinal > 0);
+
   return (
     <GlassCard>
       <GlassCardHeader className="pb-2">
@@ -26,7 +28,7 @@ export function TrendLineChart({ data }: TrendLineChartProps) {
       </GlassCardHeader>
       <GlassCardContent>
         <div className="h-72">
-          {data.length > 0 ? (
+          {hasData ? (
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
@@ -85,7 +87,7 @@ export function TrendLineChart({ data }: TrendLineChartProps) {
             </ResponsiveContainer>
           ) : (
             <div className="h-full flex items-center justify-center text-[var(--galactic-diamond)]/60">
-              Belum ada data tren
+              Tidak ada data kinerja
             </div>
           )}
         </div>
