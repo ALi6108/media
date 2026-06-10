@@ -44,8 +44,6 @@ export const membersApi = {
   uploadPhoto: (id: string, file: File) => {
     const formData = new FormData();
     formData.append('photo', file);
-    return api.post(`/api/v1/members/${id}/photo`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    return api.post(`/api/v1/members/${id}/photo`, formData);
   },
 };

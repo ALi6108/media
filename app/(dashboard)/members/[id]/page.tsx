@@ -116,7 +116,7 @@ export default function MemberDetailPage({ params }: { params: Promise<{ id: str
     if (file && member && isAdmin) {
       try {
         const res = await membersApi.uploadPhoto(member.id, file);
-        const updated = res.data?.data || res.data;
+        const updated = res.data;
         const newPhotoUrl = updated.photo_url || updated.photoUrl || null;
         if (newPhotoUrl && typeof window !== 'undefined') {
           localStorage.setItem(`member_photo_${member.id}`, newPhotoUrl);
