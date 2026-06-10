@@ -589,7 +589,7 @@ className="border-white/10 text-[var(--galactic-diamond)]/80"
 
             {perfHistory.length === 0 && !isEditingPerformance && (
               <div className="text-center py-8">
-                <p className="text-[var(--galactic-diamond)]/60">Belum ada data kinerja</p>
+                <p className="text-[var(--galactic-diamond)]/60">Tidak ada data kinerja</p>
                 {isAdmin && (
                   <Button
                     size="sm"

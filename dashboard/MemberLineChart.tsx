@@ -52,7 +52,7 @@ export function MemberLineChart({ data, title = 'Riwayat Kinerja Individu' }: Me
             </ResponsiveContainer>
           ) : (
             <div className="h-full flex items-center justify-center text-[var(--galactic-diamond)]/80">
-              Belum ada data kinerja
+              Tidak ada data kinerja
             </div>
           )}
         </div>
